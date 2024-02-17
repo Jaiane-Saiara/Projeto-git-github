@@ -1,0 +1,1065 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Princípios de Desenvolvimento de Jogos</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="5ebed5f4-5258-469c-b8db-08827754d346" class="page sans"><header><h1 class="page-title"><mark class="highlight-purple"><strong>Princípios de Desenvolvimento de Jogos</strong></mark></h1><p class="page-description"></p></header><div class="page-body"><nav id="14415605-04f8-468d-b8ae-63f6d2c972ac" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#a242e214-6e59-473d-98a1-0bea60f29cc1"><mark class="highlight-purple">Introdução</mark></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#562a742c-2284-4afc-9303-825d73682fd6"><strong>Bootcamps Dio</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#1ebbb6e8-bdb3-4c98-9e6a-a6014c3e7825">Mercado e carreira em desenvolvimento de jogos</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#cabc9d60-d32c-4ab3-bd59-e154b6bb325d">Introdução ao desenvolvimento e criação de jogos</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#da3d1961-b663-4a09-b1f3-accd9e23d6cb">Versionamento de código com Git e GitHub</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#1bded127-abc0-43a6-a059-c47e1f21803d"><mark class="highlight-purple"><em><strong>Autenticação  </strong></em></mark><mark class="highlight-gray"><em><strong>(</strong></em></mark><mark class="highlight-gray"><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github">Autenticação GitHub</a></mark><mark class="highlight-gray">)</mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#feeca569-091a-4861-91d7-0afe15dadc8d"><mark class="highlight-purple"><strong>Repositórios</strong></mark></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#a56ecaca-311c-4875-9f88-1fa68ac2546a"><strong>Páginas HTML e CSS</strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#ea066242-5adf-430d-8e11-9eddd5d69ab2">Comunicação Cliente x Server</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#d2c23b6f-fe8e-40f5-921c-76b154c94309">Intro HTML - HyperText Markup Language</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#f168e156-9998-4be7-8a7f-a04d55430f09">Formulário HTML</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#908800b2-1fe2-48e6-91ac-c6db55ed7dd9">Formatação HTML</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#3c40af45-ffb4-45c9-b137-d92830a7244a">Intro CSS - Cascading Style Sheets</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#75c2972b-f2c9-409f-a0cc-1e4a9bb9c48e"><strong>Anatomia de um conjunto de regras CSS</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#4ecb1d77-6f25-4709-93b7-56c997754941"><mark class="highlight-default">Seletor</mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#a3689bd7-8c8b-4e04-88a5-469399e5c73a"><mark class="highlight-default">Combinadores</mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#1f08ff83-d353-433e-9ac3-93ba2965dd1e"><mark class="highlight-default">Dimensionamento e Espaçamento</mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#70fc077d-58ba-4eb5-8975-0c96ed1d7892"><mark class="highlight-default">Cores, Sombra e Opacidade CSS</mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#08fc7e20-aa0e-4afa-985a-d62aa94d6431"><mark class="highlight-default">Elementos, Background e Overflow</mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#bdb44957-ca14-4973-8845-6d7110bd8b6b"><mark class="highlight-default">Imagem </mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#be2759f2-e8a4-4bcb-bb61-ea29e95f70a2"><mark class="highlight-default">Borda </mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#174788cc-1c51-4044-baec-28cc70d90a35"><mark class="highlight-default">Texto </mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#99ec7e41-3e82-4a3a-af10-dcf2a58b3ae4"><mark class="highlight-default">Fontes </mark></a></div></nav><h1 id="a242e214-6e59-473d-98a1-0bea60f29cc1" class=""><mark class="highlight-purple">Introdução</mark></h1><hr id="802c2e47-e34b-444e-a151-ff03326dec9c"/><h2 id="562a742c-2284-4afc-9303-825d73682fd6" class=""><strong>Bootcamps Dio</strong></h2><div id="3f4936db-c2d6-470a-b102-088445019b2d" class="column-list"><div id="d896790d-5f15-4782-97ee-8aba450add99" style="width:50%" class="column"><p id="e409c4eb-9de1-48ae-be38-61bf0f3b1014" class="block-color-purple"><strong>Organização</strong></p><p id="1fb8d020-b3ea-4cd5-81f8-55230b1b756b" class="">Bootcamp &gt; intensivo</p><ul id="96b509da-b2cf-4861-9467-bb6deaf235af" class="bulleted-list"><li style="list-style-type:disc">Matriz de eisenhower</li></ul><ul id="5216a7e4-f73e-4769-8a26-ba6395065c75" class="bulleted-list"><li style="list-style-type:disc">Cronograma (DIO)</li></ul><ul id="e570977b-5cd6-4aa3-8678-d0bcb38a1573" class="bulleted-list"><li style="list-style-type:disc">Pomodoro</li></ul></div><div id="3bcbf464-a0c5-45da-98c8-820c495744fc" style="width:50%" class="column"><p id="dddd7ebc-ce21-438b-830e-b12ff913de91" class="block-color-purple"><strong>Materiais</strong></p><p id="de4fec3a-fa59-409f-ac75-436af92082df" class="">Rooms - <a href="https://www.dio.me/articles/rooms">https://www.dio.me/articles/rooms</a></p><p id="4669a193-aac4-48f0-8f64-3db0d30926be" class="">Artigos - <a href="https://www.dio.me/articles">https://www.dio.me/articles</a></p><p id="5adb2f3a-141a-48a0-9f48-6db8923ec8c7" class="">Sites - <a href="https://stackoverflow.com/">https://stackoverflow.com/</a></p></div></div><p id="16a7c0f6-231b-477b-9482-7dd947e1e001" class="block-color-purple"><strong>Metodologia</strong></p><p id="c2c34259-4fec-4afa-83d8-d2c8a1307301" class="">DIO (cursos + desafios de código + desafios de projeto + mentorias + certificados)</p><p id="5dfe4a1f-be6d-48e5-8565-a58095c8e7be" class="">LEARN - Lógica, Especialista, Aprendizado, Reconhecimento e notoriedade.</p><p id="9529f175-1f2c-4986-ac35-ae27d79d92f2" class="">HERO - humanidades, experiências, rooms, oportunidade.</p><p id="705c7a22-2d92-478c-83f2-6adab62189ae" class="">ACT - aquisição, consolidação, transição</p><p id="5ae018d2-d7c5-43a0-893c-36c3be86fe09" class="">
+</p><hr id="ba48afb2-68bb-45af-a666-7d413c3397ef"/><h2 id="1ebbb6e8-bdb3-4c98-9e6a-a6014c3e7825" class="">Mercado e carreira em desenvolvimento de jogos</h2><div id="58fe2656-ac27-4983-ae79-ba0eaaac8514" class="column-list"><div id="956c99f7-6fbe-481c-bcdb-fa5e5396da03" style="width:50%" class="column"><p id="209f70bc-2167-46c9-b949-3f9112df1637" class="block-color-purple"><strong>Indústria de jogos</strong></p><p id="eadd63c2-727f-41a7-9921-13c9c179f34c" class="">Principais empresas de jogos: ABRA games</p><ul id="287164c3-d20e-4658-b962-09737c2b7748" class="bulleted-list"><li style="list-style-type:disc">Unit /C#</li></ul><ul id="bc00b6ea-5e49-4350-a9a0-b3c28efea3f7" class="bulleted-list"><li style="list-style-type:disc">Unreal /C++</li></ul><ul id="43fdcede-fa10-44ed-b809-f04b5b335c33" class="bulleted-list"><li style="list-style-type:disc">Godot /GDScript</li></ul><ul id="2b42a4db-18c0-45f9-854b-1904a28e127e" class="bulleted-list"><li style="list-style-type:disc">libGDX /Java</li></ul><p id="061bcce6-fa45-4294-bc3b-a2e5965b09bc" class=""><strong>Plataforma e tipos mais comuns</strong></p><ul id="e7d66d6d-d0ec-4305-8242-50d8e16c0591" class="bulleted-list"><li style="list-style-type:disc">Entretenimento/ Educacional</li></ul><ul id="0407a1c1-0650-4f57-9eb4-21778fb692fc" class="bulleted-list"><li style="list-style-type:disc">Mobile</li></ul></div><div id="b18609c1-9244-4e13-bd86-8d62682008bf" style="width:50%" class="column"><p id="9d6e115a-94ff-47ff-8bb3-b1518b8d3d1e" class="block-color-purple"><strong>Iniciação da carreira</strong></p><ul id="489cf39e-1a43-4f27-ab75-60deb8c730bb" class="bulleted-list"><li style="list-style-type:disc"><strong>Estudos</strong></li></ul><ul id="ed710140-3106-4045-aa9c-d411479ef9db" class="bulleted-list"><li style="list-style-type:disc"><strong>Portfólio ( GitHub, art station, itch.io, site próprio e notion)</strong></li></ul><ul id="5d50125b-bef1-4be4-8ce3-c7fc87c2bb26" class="bulleted-list"><li style="list-style-type:disc">Pensa no objetivo (longos e curtos)</li></ul><ul id="c7dcfaaa-cff4-4666-9527-01e73304cdbc" class="bulleted-list"><li style="list-style-type:disc">Plano de aprendizado (menos de cinco anos) (motivação, processo e objetivos</li></ul><ul id="9d6c8e5f-29d2-4206-b5bb-7d10ff5a5884" class="bulleted-list"><li style="list-style-type:disc">Desenvolver protótipos e projetos</li></ul><ul id="2007addc-bf52-4b25-b233-83ef950c4b5c" class="bulleted-list"><li style="list-style-type:disc">Networking</li></ul><p id="46fb9047-96a0-44ec-a16d-dbd18c761de3" class="">
+</p></div></div><p id="029be70f-55a5-40e3-b381-ca91d4eccfc2" class="block-color-purple"><strong>Carreiras e cargos</strong></p><ul id="0f7eee85-6dd9-41ab-ab19-409bb42f16f2" class="bulleted-list"><li style="list-style-type:disc"><strong>Programação ( gameplay, AI, Network, Ferramentas ex. unit, GFX/Shareds)</strong></li></ul><ul id="08b02811-40b1-4799-a8a0-ed784692192d" class="bulleted-list"><li style="list-style-type:disc">Arte gráfica (2d e 3d, animação, arte conceitual, UI/UX, tech art)</li></ul><ul id="37acacbf-a907-41cd-a2f4-87e460584195" class="bulleted-list"><li style="list-style-type:disc">Game Design ( prototipagem e idealização, arquitetura dos sistemas, balanceamento, UX e level design)</li></ul><ul id="0033ad48-f763-4f5d-bd48-a6603f5d90c2" class="bulleted-list"><li style="list-style-type:disc">Audio design (efeitos e trilha sonora, programação de audio)</li></ul><ul id="eb854a05-aaea-4648-af01-0f70b05494f3" class="bulleted-list"><li style="list-style-type:disc">Narrativa</li></ul><ul id="b1ae2c4e-f205-4657-8fe1-5a0cf900f3b9" class="bulleted-list"><li style="list-style-type:disc">Tester (QA)</li></ul><ul id="03375de2-834b-4ddd-a0e4-8761a2bdca3a" class="bulleted-list"><li style="list-style-type:disc">Produção</li></ul><ul id="401431ca-289d-4da0-b93c-fc7e96257821" class="bulleted-list"><li style="list-style-type:disc">Marketing</li></ul><p id="901a552a-9e91-42be-8a53-fdb4a06c1763" class="block-color-purple"><strong>Ferramentas</strong> - The gamer inside brasil, ABRA GAMES</p><hr id="7a18af19-12b4-4dad-b26a-9e2cf35c5547"/><h2 id="cabc9d60-d32c-4ab3-bd59-e154b6bb325d" class="">Introdução ao desenvolvimento e criação de jogos</h2><p id="e2a041f2-9bd7-4376-8f73-dd1197da6c2d" class="">
+</p><figure class="block-color-purple_background callout" style="white-space:pre-wrap;display:flex" id="fed8a455-405e-44e0-8ca8-4c508300db1a"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_gray.svg"/></div><div style="width:100%"><mark class="highlight-purple"><strong>Etapas de desenvolvimento de jogos</strong></mark><ol type="1" id="69614b8c-0275-42e1-ad94-89d9b42ecb3d" class="numbered-list" start="1"><li>Idealização</li></ol><ol type="1" id="7052efc6-8f8b-4d5f-89c7-7e5134612b2e" class="numbered-list" start="2"><li>Protótipo</li></ol><ol type="1" id="e8f72b2e-9995-4d86-af04-c8c0372027a3" class="numbered-list" start="3"><li>Fatia vertical - validação dos itens anteriores</li></ol><ol type="1" id="4f05aae4-3abe-44f3-85ea-cff854fc088e" class="numbered-list" start="4"><li>Início de produção - início da versão definitiva</li></ol><ol type="1" id="ed4c1ef0-5f9c-483b-9526-a40fdf2e0e12" class="numbered-list" start="5"><li>Alpha(feature complete) - &quot;esqueleto do jogo&quot;</li></ol><ol type="1" id="94aa9569-3d98-43b1-9e66-7106b38a6da5" class="numbered-list" start="6"><li>Beta(content complete) -</li></ol><ol type="1" id="71cc018b-aeb1-489e-b437-bef95dec204e" class="numbered-list" start="7"><li>Versão final</li></ol><ol type="1" id="a2afb86d-e953-47c4-a650-0afcc4d221c9" class="numbered-list" start="8"><li>Lançamento</li></ol></div></figure><p id="c7af1c99-555a-4d8a-bbed-6afe5e54d73d" class="">
+</p><p id="292a1f9e-bd0f-44a4-a561-6dee25afe960" class="block-color-purple"><strong>Criação de jogos (Fases)</strong></p><ul id="edaf3580-5a21-44ad-9c20-d30ac4bf3cfc" class="bulleted-list"><li style="list-style-type:disc">Conceito → qual será o tema do jogo, a história, quem serão as personagens e como será a estética</li></ul><ul id="dd91e385-d6cd-408b-ac5a-234f1b0dcfbc" class="bulleted-list"><li style="list-style-type:disc">Design → aqui, além dos aspectos visuais e sonoros, é preciso detalhar como será a mecânica do jogo, as regras e como se joga.</li></ul><ul id="2c183a12-7029-4260-868d-9ee69ed96cdf" class="bulleted-list"><li style="list-style-type:disc">Programação → nessa fase o algoritmo que descreve o passo a passo do jogo é codificado para alguma linguagem de programação e assim os computadores, celulares e consoles podem fazer a leitura para que possamos jogar.</li></ul><div id="55c5e8bb-3d61-4a41-a2ff-586bfd8573db" class="column-list"><div id="1f3f3f82-a48a-4567-9f1f-69ecfe2f6158" style="width:50%" class="column"><p id="b6256d0c-a485-494f-ade8-8672da9c8726" class="">
+</p><figure class="block-color-purple_background callout" style="white-space:pre-wrap;display:flex" id="252bfb31-356b-4004-bc39-9ed4d82c2a8b"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_gray.svg"/></div><div style="width:100%"><mark class="highlight-purple"><strong>A tétrade elementar dos jogos</strong></mark><ul id="f404674a-8382-4f34-9c7a-dd65491a1f4b" class="bulleted-list"><li style="list-style-type:disc">Estética (identidade visual)</li></ul><ul id="da9df531-f94a-43b2-9f27-f4d0a29377b1" class="bulleted-list"><li style="list-style-type:disc">Mecânica (Pens. computacional)</li></ul><ul id="bffe9294-a2b7-4d09-b33a-85b04d5aaa07" class="bulleted-list"><li style="list-style-type:disc">História</li></ul><ul id="217dddda-535b-495f-837e-6c7953e0b4b9" class="bulleted-list"><li style="list-style-type:disc">Tecnologia</li></ul></div></figure></div><div id="d3f4e1e1-ff25-460f-a056-f4f9199f0bc0" style="width:50%" class="column"><p id="211b3207-39c9-4fa3-96eb-e4921b54e1e4" class="">
+</p><figure class="block-color-purple_background callout" style="white-space:pre-wrap;display:flex" id="b897a9c9-ad48-47c9-b24a-b0d06272a663"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_gray.svg"/></div><div style="width:100%"><mark class="highlight-purple"><strong>Publicação</strong></mark><ul id="d04d7da3-24ea-471c-888f-7eda213ac1ae" class="bulleted-list"><li style="list-style-type:disc">Mobile (Play Store e App store)</li></ul><ul id="0c2829e4-2d6b-4996-89c3-f6e80a650a2a" class="bulleted-list"><li style="list-style-type:disc">PC (Steam, epic games, <strong>itch.io</strong>)</li></ul><ul id="9f85fa5e-eb6f-499a-8168-adf08b6abb1d" class="bulleted-list"><li style="list-style-type:disc">Web ( Kongregate, GameJolt)</li></ul><ul id="d5e4bb5d-c37c-4b25-a00f-9f38683e77f9" class="bulleted-list"><li style="list-style-type:disc">Consoles (Xbox, Switch)</li></ul></div></figure></div></div><p id="f3bafb5a-769e-4f8e-ab7b-ab5553a3e84e" class="block-color-purple"><strong>Elementos básicos(Mecânica)</strong></p><p id="ea732f01-7dbd-4a04-ae87-3d663dbb4a54" class="">Objetivo / Interação / obstáculos / regras / níveis / recompensa / emblemas</p><p id="0d2234ea-b4bb-493b-b141-fc4d688b84e9" class="">
+</p><p id="ae7e3e68-b878-47bb-8aec-e83e0cb04949" class="block-color-purple"><strong>Exemplo: Xadrez</strong></p><ul id="b47a9f16-518d-4c30-8af2-a2fbf0729340" class="bulleted-list"><li style="list-style-type:disc">Estética → têm aspectos visuais simples e cada peça remete à uma personagem.</li></ul><ul id="9f437844-472d-483b-8834-a890f9f3bd96" class="bulleted-list"><li style="list-style-type:disc">Mecânica → há regras para posicionar as peças e movimentá-las.</li></ul><ul id="5f598ac5-a66c-48c8-a884-53f492f716e6" class="bulleted-list"><li style="list-style-type:disc">Narrativa → não há uma história explícita sendo contada, mas o nome de cada peça faz referência aos reinos do período medieval.</li></ul><ul id="08d00bfa-aae8-4da6-8360-24d83c33923a" class="bulleted-list"><li style="list-style-type:disc">Tecnologia → o jogo é formado por um tabuleiro e 32 peças.</li></ul><p id="6642a3fc-5e37-4cfd-93fc-419ce05c0b0b" class="">*Direitos autorais   *Inteligência artificial</p><hr id="12afd82d-dbf0-4d38-bc38-766ce5d12fd6"/><h2 id="da3d1961-b663-4a09-b1f3-accd9e23d6cb" class="">Versionamento de código com Git e GitHub</h2><ul id="b9a55ec1-e373-463d-b530-8962be599ff0" class="toggle"><li><details open=""><summary><strong>Conceitos git e github</strong></summary><ul id="8a1d0a2d-3a62-46d6-bf0f-26c66d0c9648" class="bulleted-list"><li style="list-style-type:disc">Downstream - é tudo que você pega do <em>git: clonar um repositório, fazer um pull.</em></li></ul><ul id="ae9fd54e-9dce-40df-b077-cc50d0ad6431" class="bulleted-list"><li style="list-style-type:disc">Upstream - é tudo que você insere no <em><strong>git</strong></em>: criar um repositório no <em><strong>git</strong></em>, fazer um commit, fazer um push.</li></ul><ul id="b39428cb-eade-480d-b621-213b35c3fbe2" class="bulleted-list"><li style="list-style-type:disc">Branch - Ramificação, ou seja um repositório paralelo.</li></ul><ul id="c6f0c179-5b9a-40fd-b3fc-966cb88a14f7" class="bulleted-list"><li style="list-style-type:disc">Commit </li></ul><p id="78223889-194f-4b24-bbd4-c9da90920138" class="">
+</p></details></li></ul><ul id="b4a52df1-88e4-4755-8979-e9aa1c1f91a7" class="block-color-default bulleted-list"><li style="list-style-type:disc"><mark class="highlight-purple"><strong>Versionamento de código</strong></mark><mark class="highlight-purple"> -</mark> é uma maneira organizada de administrar mudanças no código, criando versões.</li></ul><ul id="3b67aac1-8f63-4d6a-af99-5d5374bdbbc8" class="block-color-default bulleted-list"><li style="list-style-type:disc"><mark class="highlight-purple"><strong>Sistema de controle de versões - </strong></mark>Registra o histórico de atualizações de um arquivo, gerencia quais foram as atualizações, organiza, controla e assegura<p id="231eb9d3-1c46-465b-ba41-28dc3d843e1c" class=""><strong>VCS Centralizado (CVCS) - </strong>O servidor central contém todos os arquivos responsáveis pelo controle, é muito propício a perda de dados. Ex. CVS, Subversion</p><p id="6031ee3c-25d3-4ede-8844-ca8f187138b9" class=""><strong>VCS Distribuído (DVCS) -</strong> O repositório é duplicado localmente .Ex. Git, Mercurial</p><p id="c56f2689-29e4-4f8c-8426-ebf015a91764" class="">
+</p></li></ul><p id="b7965575-688f-4ed0-a314-fc432fc9d45f" class="block-color-purple"><strong>Git (DVCS) com branching(ramificações) e merging (fusões) eficientes</strong></p><p id="2d67e518-0dc5-41a3-a60e-ffdd896f893a" class="">Servidor &lt; banco de versões central</p><p id="bbb5a2a8-49eb-464a-817c-126463c45c94" class="">Repositório individual &lt; banco de versões remoto</p><ul id="6ab269ff-7042-4a30-a135-327afd6a1d90" class="bulleted-list"><li style="list-style-type:disc">Git pull ( puxa as alterações do repositório remoto para o local (busca e mescla)</li></ul><ul id="555e9275-2b08-436b-bd39-2396e4b76446" class="bulleted-list"><li style="list-style-type:disc">Credential.helper ( cache or store)</li></ul><p id="13531a4e-e815-4296-9a51-883162f6b170" class="block-color-purple"><mark class="highlight-default"><strong>*Github (hospedagem de código com controle de versão com git)</strong></mark></p><ul id="c7c16afe-cdfe-4422-87a5-8cd89d565602" class="block-color-purple toggle"><li><details open=""><summary><mark class="highlight-purple"><strong>Configurações do Git:</strong></mark></summary><ul id="80963f3b-b08f-4e67-b518-f264ea93dcbd" class="block-color-gray toggle"><li><details open=""><summary>Config file location</summary><p id="5d1cba1c-e5ba-4eb5-8165-8b5561d36d6e" class=""><code>--global              use global config file</code></p><p id="61d261e7-793b-4c9f-8d35-c721c54ae371" class=""><code>--system              use system config file</code></p><p id="c40a5573-0238-4f2b-acc1-65d5c996b685" class=""><code>--local               use repository config file</code></p><p id="0eb2ab7c-e427-460b-af72-6e0dadbe1d1d" class=""><code>--worktree            use per-worktree config file</code></p><p id="ed181d3d-447e-42f0-921f-882cb8eb7930" class=""><code>-f, --file &lt;file&gt;     use given config file</code></p><p id="a0493329-9d6d-488d-aed8-6edf7e5e9966" class=""><code>--blob &lt;blob-id&gt;      read config from given blob object</code></p></details></li></ul><ul id="8dd5477b-193e-48b9-9186-97157b301304" class="block-color-gray toggle"><li><details open=""><summary>Action</summary><p id="a2143eaa-8e11-43b5-b1f4-7cf4f0a96202" class=""><code>--get                 get value: name [value-pattern]</code></p><p id="77068988-6656-4c7f-96cd-6a53ebd64710" class=""><code>--get-all             get all values: key [value-pattern]</code></p><p id="bfe16118-5fea-44e3-a381-bd81eff5a483" class=""><code>--get-regexp          get values for regexp: name-regex [value-pattern]</code></p><p id="de29b030-adae-4d34-a33f-b8f5ee1ad26e" class=""><code>--get-urlmatch        get value specific for the URL: section[.var] URL</code></p><p id="c9b1f47a-9e1f-481f-bf3e-3b72be393a0c" class=""><code>--replace-all         replace all matching variables: name value [value-pattern]</code></p><p id="0f9319ea-b2de-47f8-a231-ff6e82998c9f" class=""><code>--add                 add a new variable: name value</code></p><p id="acee99dc-c1f0-4f03-928b-2e93ca9811e3" class=""><code>--unset               remove a variable: name [value-pattern]</code></p><p id="ff6ecaad-ff23-4517-815a-9f9c06cd646f" class=""><code>--unset-all           remove all matches: name [value-pattern]</code></p><p id="a294bb63-330b-4e06-adbd-3c0ca7699866" class=""><code>--rename-section      rename section: old-name new-name</code></p><p id="adbf2618-838e-45b4-b760-6ab2fab6f023" class=""><code>--remove-section      remove a section: name</code></p><p id="3f926f0b-9040-4aa3-bbd5-2ab05f3de339" class=""><code>-l, --list            list all</code></p><p id="2774afad-5fb9-4414-a9e3-0df7480d0ff8" class=""><code>--fixed-value         use string equality when comparing values to &#x27;value-pattern&#x27;</code></p><p id="6e94f845-3337-492a-8cc5-9b8710ab752c" class=""><code>-e, --edit            open an editor</code></p><p id="b70ffcbb-4a51-450b-aa7f-d545c8f79727" class=""><code>--get-color           find the color configured: slot [default]</code></p><p id="b65016dd-c86a-4c73-a7ec-e9db665d1b52" class=""><code>--get-colorbool       find the color setting: slot [stdout-is-tty]</code></p></details></li></ul><ul id="4eb2d59f-ff40-48ad-a3ef-0d5520ea433f" class="block-color-gray toggle"><li><details open=""><summary>Type</summary><p id="29c3871e-ce7e-4421-b5a9-86a49b4aecff" class=""><code>-t, --type &lt;type&gt;     value is given this type</code></p><p id="086498dd-f74a-4e37-8326-9f5c8ee49ddd" class=""><code>--bool                value is &quot;true&quot; or &quot;false&quot;</code></p><p id="7586e127-39a2-4a6f-aee5-2cae3597bcaa" class=""><code>--int                 value is decimal number</code></p><p id="458b1fa6-efbf-4533-8be6-6500b0c795be" class=""><code>--bool-or-int         value is --bool or --int</code></p><p id="7486953d-8a49-4f98-946d-e0c934a1995b" class=""><code>--bool-or-str         value is --bool or string</code></p><p id="08e32b09-f980-4a7f-9a9c-cb1fd79f18c7" class=""><code>--path                value is a path (file or directory name)</code></p><p id="58cbc180-8031-48af-9009-4f10652d4f46" class=""><code>--expiry-date         value is an expiry date</code></p></details></li></ul><ul id="e138dcf7-464f-40ab-bbc2-e98a5c05a8d6" class="block-color-gray toggle"><li><details open=""><summary>Other</summary><p id="19dbad93-3277-42e3-909f-12230b5780e0" class=""><code>-z, --null            terminate values with NUL byte</code></p><p id="bf9514d6-1743-43b1-885e-cc397a41ed10" class=""><code>--name-only           show variable names only</code></p><p id="3ffab4e5-7fc6-4b71-a4da-9eb5af475a35" class=""><code>--includes            respect include directives on lookup</code></p><p id="32b1cd8a-4ce7-4311-8965-bb1f81ff45b5" class=""><code>--show-origin         show origin of config (file, standard input, blob, command line)</code></p><p id="007f9e3f-050d-4283-8866-a5e7a89b11df" class=""><code>--show-scope          show scope of config (worktree, local, global, system, command)</code></p><p id="504e73b9-1593-4084-88d3-c173370262c4" class=""><code>--default &lt;value&gt;     with --get, use default value when missing entry</code></p></details></li></ul><ul id="b0501480-3437-413f-9741-08eaf0800cee" class="block-color-gray toggle"><li><details open=""><summary><span style="border-bottom:0.05em solid">Passo a passo</span></summary><p id="6a521aae-00a4-4957-b9b6-3ad96001fd73" class=""><code> git config --list</code></p><ol type="1" id="1dde5078-e563-456f-8cac-895bde6c9cdf" class="numbered-list" start="1"><li>Configurando seu nome de usuário e e-mail (globalmente):</li></ol><p id="ad2beb65-96df-47bc-bfcb-42559f01c096" class=""><code> git config --global user.name &quot;Nome Sobrenome&quot; <br/> git config --global user.email seuemail@email.com<br/></code></p><ol type="1" id="e774926e-6e03-458b-a2c0-c6336a2218fb" class="numbered-list" start="2"><li>Configurando o nome da Branch Padrão:</li></ol><p id="8adb2923-06b9-47e5-a172-cc641400d249" class=""> <code>git config --global init.defaultBranch main</code></p></details></li></ul></details></li></ul><p id="39faa75e-7f59-4f8d-a6a4-22a10c376384" class="">
+</p><h3 id="1bded127-abc0-43a6-a059-c47e1f21803d" class=""><mark class="highlight-purple"><em><strong>Autenticação  </strong></em></mark><mark class="highlight-gray"><em><strong>(</strong></em></mark><mark class="highlight-gray"><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github">Autenticação GitHub</a></mark><mark class="highlight-gray">)</mark></h3><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="8a0bf020-f2dc-445b-b767-0c698b65e682"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_gray.svg"/></div><div style="width:100%"><strong>p/Token</strong><ol type="1" id="5bc1edc4-b02a-4c06-aaf5-24fc456009a4" class="numbered-list" start="1"><li><code><mark class="highlight-purple">git clone + (código de acesso ao token) + senha</mark></code><mark class="highlight-purple"> </mark></li></ol><ol type="1" id="f06d644a-923d-4134-b440-e920dd132259" class="numbered-list" start="2"><li>Salvando credencial na máquina:<mark class="highlight-purple"><br/><br/></mark><mark class="highlight-default">permanete  </mark><mark class="highlight-purple"><code>git config —global credential.helper store</code></mark><p id="fa4a1e0a-6252-435b-9e22-69518772bcdd" class=""><mark class="highlight-default">temporário</mark><mark class="highlight-purple"> </mark><code><mark class="highlight-purple">git config —global credential.helper cache</mark></code></p></li></ol><ol type="1" id="df593bc4-e94c-4fe8-8ee4-4948758c2bfc" class="numbered-list" start="3"><li><mark class="highlight-purple"><code>git config —global show origin credential.helper</code></mark><mark class="highlight-purple"> </mark>Encontrar credencial na máquina</li></ol><p id="4921db18-43e7-4a7a-b81a-45a6e22a6ae9" class="">
+</p></div></figure><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="5ed4d718-17b2-452b-90af-04e535a657a4"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_gray.svg"/></div><div style="width:100%"><strong>p/ Chave SSH</strong><p id="03269c08-2349-4a70-ae88-83a2c6e0cc6a" class="">Encontrando chaves existentes:  <mark class="highlight-purple"><code>ls -a ~/.ssh</code></mark></p><p id="b7f5eff9-226b-447b-9395-cbc4421323f7" class="">Gerar chave ssh: </p><ol type="1" id="52eadb4d-853a-4697-9f5f-9e2f0100c629" class="numbered-list" start="1"><li><mark class="highlight-purple"><code>ssh-keygen -t ed25519 -C &quot;your_email@example.com&quot;</code></mark><mark class="highlight-purple"> </mark><mark class="highlight-default">*gerar arquivo da chave e escolher o algortimo</mark></li></ol><ol type="1" id="ab868419-5eb2-4b5f-a76c-1de341c77581" class="numbered-list" start="2"><li><mark class="highlight-purple"><code>&gt; Enter a file in which to save the key (/c/Users/YOU/.ssh/id_ALGORITHM):[Press enter]</code></mark> *local para arquivo da chave  &gt; Inserir senha (passpharse)</li></ol><ol type="1" id="2e393665-e6ca-426a-bb1e-bd900d9e0743" class="numbered-list" start="3"><li><mark class="highlight-purple"><code>eval “$(ssh-agent -s)”</code></mark><mark class="highlight-default"> *executar ssh agent</mark></li></ol><ol type="1" id="db9dbbfc-ddfd-46af-aa63-a548c830af3b" class="numbered-list" start="4"><li><mark class="highlight-purple"><code>ssh-add ~/.ssh/id_ed25519</code></mark>*adicionar chave privada &gt;Inserir senha (passpharse)</li></ol><ol type="1" id="c5d1e252-00aa-4fdf-9cb5-7b1ab51d51ac" class="numbered-list" start="5"><li>*adicionar chave pública à conta do github</li></ol></div></figure><p id="fe453131-80a3-46e3-bce9-00045da33abd" class="">
+</p><h3 id="feeca569-091a-4861-91d7-0afe15dadc8d" class=""><mark class="highlight-purple"><strong>Repositórios</strong></mark></h3><p id="a0b47480-3f85-4568-a9c0-afa57521ad5e" class="block-color-default"><strong>Obter um repositório git</strong></p><ul id="5df088a6-d405-452c-aa84-7d3cfacb49f9" class="bulleted-list"><li style="list-style-type:disc">Transformando de um diretório local</li></ul><ul id="ecb5809d-7723-453c-b687-2c41999ee1ad" class="bulleted-list"><li style="list-style-type:disc">Clonando um repositório Git existente</li></ul><ul id="267feb32-c332-4833-aed1-61acba1b67f1" class="toggle"><li><details open=""><summary><strong>Instruções para repositóio GitHub</strong></summary><ol type="1" id="05337bf9-cdec-4623-8ecc-d8c46f764267" class="numbered-list" start="1"><li>Criar um novo repositório na linha de comand</li></ol><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="115228e4-4913-49b9-8d95-888a070f51f0" class="code"><code class="language-Markdown">echo &quot;# DIO-resumos-git-github&quot; &gt;&gt; README.md
+git init
+git add README.md
+git commit -m &quot;first commit&quot;
+git branch -M main
+git remote add origin https://github.com/Jaiane-Saiara/DIO-resumos-git-github.git
+git push -u origin main</code></pre><p id="a6d8eebe-659f-4c21-a6ff-0588b41291f9" class="">
+</p><ol type="1" id="82e8ff45-10e7-49b9-b67e-b41967b67e94" class="numbered-list" start="2"><li>Enviar um repositório existente na linha de comando</li></ol><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="de258112-99a5-46b1-9c25-186d3cca51d9" class="code"><code class="language-Markdown">git remote add origin https://github.com/Jaiane-Saiara/DIO-resumos-git-github.git
+git branch -M main
+git push -u origin main</code></pre><ul id="901703a6-e7b9-4f01-8e31-0c930dc55cbb" class="bulleted-list"><li style="list-style-type:disc">O segundo comando força a mudança da branch Master para a Main</li></ul></details></li></ul><p id="012e3bf4-a34a-47ab-8a96-b82f56ae226f" class="">
+</p><p id="75af7397-4cb4-4e67-b449-e1d32e511f15" class=""><strong>Obtendo um repositório</strong><div class="indented"><ol type="1" id="a7abf6c1-1b24-4f4d-9328-7d83faf39886" class="numbered-list" start="1"><li>Criar uma pasta para transformar no repositório </li></ol><p id="d1669ac5-6589-4764-9048-bdf735f77c9b" class=""><mark class="highlight-purple"> </mark><mark class="highlight-purple"><code>git clone “url do repositório”</code></mark></p><p id="91cfa97b-35b1-4274-abb4-cc1b8bab67d2" class=""><mark class="highlight-purple"> </mark><mark class="highlight-purple"><code>cd “repositórioclonado”</code></mark></p><ol type="1" id="ab12012a-1920-4860-b375-519a09571412" class="numbered-list" start="2"><li>Inicializar o repositório</li></ol><p id="e728c1fe-d2dd-48c0-8b3f-b3ae400c4b86" class=""><mark class="highlight-purple"> </mark><mark class="highlight-purple"><code>git init</code></mark><mark class="highlight-purple"> </mark></p><p id="adc8c908-b0d4-4b27-b422-83c733c18f23" class=""><mark class="highlight-purple"> </mark><mark class="highlight-purple"><code>cd .git</code></mark><mark class="highlight-purple">  para (GIT_DIR!)  /  </mark><code><mark class="highlight-purple">cd ..</mark></code><mark class="highlight-purple"> para main</mark></p><ol type="1" id="aaf96152-3773-446f-ba2e-29cf960dc7d3" class="numbered-list" start="3"><li>Conectar o repositório remoto ao local</li></ol><p id="6db08851-57b2-4706-803c-79d1c98531ac" class="block-color-default"><mark class="highlight-purple"><code>git remote add origin “url”</code></mark> - repositório local</p><p id="80b46791-b92c-45fb-a5f0-3dbf79280ec4" class="block-color-default"><mark class="highlight-purple"><code>git clone “url” nome-do-repositório-local</code></mark> - repositório remoto</p><p id="50b12986-f596-46e9-ae69-61bb3f0b9249" class="block-color-default">ou <mark class="highlight-purple"><code>git clone “url” nome-do-repositório-local --branch &quot;nome&quot; --single branch</code></mark> - repositório remoto (clonar apenas uma branch)</p></div></p><p id="4a00e4f5-a0b9-4e16-b980-18db954b0055" class="">
+</p><p id="f8d3366f-3b85-4200-ba33-2d3c3fbf746e" class=""><strong>Fazendo alterações no repositório</strong><div class="indented"><p id="b05beaef-90f2-44c5-a4b1-ed997f5ae8ae" class=""><mark class="highlight-purple"><code>mkdir NomeDaPasta</code></mark><mark class="highlight-default"> - Criar uma pasta</mark></p><p id="c0308845-0c62-4269-ba77-d146a0fe30d6" class=""><mark class="highlight-purple"><code>echo NomeDaPasta/ &gt; .gitignore </code></mark>- Ignorar uma pasta</p><p id="8cc9d477-9da7-48c6-b03b-f04161bae633" class=""><mark class="highlight-purple"><code>echo &gt; .gitignore </code></mark><mark class="highlight-purple"> - </mark><mark class="highlight-default">Retornar a visibilidade da pasta</mark></p><ul id="14975647-0471-4e3d-ad0a-9a2ab6f3da78" class="bulleted-list"><li style="list-style-type:disc">arquivo <strong>.gitkeep - </strong>Convenção para reconhecer um diretório vazio</li></ul><p id="3cf6d345-fd2a-4974-9265-4eeb54b6ccb8" class=""><code><mark class="highlight-purple">git status</mark></code></p><p id="43ee281b-7f34-4098-af35-e368d1e0c5ad" class=""><code><mark class="highlight-purple">touch README.md</mark></code><mark class="highlight-purple"> </mark><mark class="highlight-default">- criar arquivo vazio README em marckdown *podendo substituir o nome</mark></p><p id="dedd5aa3-98a7-432c-aa56-8481d3e86bd9" class=""><code><mark class="highlight-purple">git add README.md</mark></code><mark class="highlight-purple"> </mark><mark class="highlight-default">- adicionar o arquivo para a área de preparação</mark></p><p id="9a4f907b-f6ff-4f2b-bd79-dfcbbbdfb911" class=""><code><mark class="highlight-purple">git add . </mark></code><mark class="highlight-purple">  </mark><mark class="highlight-default">-</mark> adicioar todos os arquivos para a área de preparação</p><p id="c41d86db-f277-4139-b47e-ba37c4148663" class=""><mark class="highlight-purple"><code>git commit -m”NomeDoCommit” </code></mark><mark class="highlight-purple"> </mark>- criar um commit para o arquivo</p><p id="dce9b334-20dd-41ce-bfba-3fc00d193117" class=""><mark class="highlight-purple"><code>git log </code></mark>- exibir commits</p></div></p><p id="015e875d-89cb-41db-8c04-d917ed2508c8" class="">
+</p><p id="d14e6051-76ac-45ec-9fa0-72a1eab57ec2" class=""><strong>Desfazendo alterações no repositório</strong><div class="indented"><p id="cb54e4d2-b54c-4bf2-924a-745128cd3844" class=""><mark class="highlight-purple"><code>rm -rf .git </code></mark><mark class="highlight-purple"> </mark>- remover o diretório .git</p><p id="853d8261-288f-4598-b0a3-a80313f3b019" class=""><mark class="highlight-purple"><code>git restore NomeDoArquivo </code></mark>- restaurar versão anterior do arquivo editado</p><p id="3020f418-639b-497f-aa85-031b1378a79b" class=""><mark class="highlight-purple"><code>git commit --amend -m “NovoNomeDoCommit”</code></mark> - mudar a mensagem do commit anterior</p><p id="9129edd1-8edf-471b-a4a6-63fce8a9b23f" class=""><mark class="highlight-purple"><code>git commit --amend </code></mark><mark class="highlight-purple"> </mark><mark class="highlight-default">- abrir o editor</mark></p><p id="9ffb707d-dea8-4a9e-8274-83a1191334cb" class="">tecla esc + <code><mark class="highlight-purple">:q </mark></code>- fechar editor sem salvar alterações</p><p id="3d4edd60-b600-4683-b44f-e5bffcdd339c" class="">tecla esc + <mark class="highlight-purple"><code>:wq</code></mark> fechar o editor salvando alterações</p><p id="fdb7e1b5-6838-43bd-966f-c255650e08c1" class=""><code><mark class="highlight-purple">git reset --soft CódigoDoCommit</mark></code><mark class="highlight-purple"> </mark><mark class="highlight-default">- Adicionar os arquivos posteriores ao commit selecionado á área de preparação</mark></p><p id="ab69dc15-23ae-48cf-af57-cd3ea9767514" class=""><code><mark class="highlight-purple">git reset --mixed CódigoDoCommit</mark></code><mark class="highlight-purple"> </mark><mark class="highlight-default">- Adicionar os arquivos anteriores a área de trabalho “untracked files”</mark></p><p id="28b0d564-ba53-467c-a1d3-bdce4257b09a" class=""><code><mark class="highlight-purple">git reset --hard CódigoDoCommit</mark></code><mark class="highlight-purple"> </mark><mark class="highlight-default">- Desfazer os arquivos do commit anterior</mark></p><p id="9f5d0932-8dbb-4307-898b-e0b7af839f34" class=""><mark class="highlight-purple"><code>git reflog </code></mark>- Histórico das alterações</p><p id="d4d7e0ed-5404-45f5-8958-6303dfbb8225" class="">
+</p></div></p><p id="d3ed29c5-89c5-4f9a-bdf8-65e5ae4658cc" class="">
+</p><p id="dde8d9c6-3238-4367-be13-0be10747dd35" class=""><strong>Enviando e baixando aterações com o repositório remoto</strong><div class="indented"><p id="aa33bce1-16ec-46ce-a550-bebb2b0baa2a" class=""><mark class="highlight-purple"><code>git remote add origin </code></mark>+ link do repositório remoto</p><p id="81c848c8-6fd3-4b09-bca3-241e960695ac" class=""><code><mark class="highlight-purple">git push -u origin main</mark></code>*-u indica set upstream</p><p id="59742677-e072-4868-b38d-4124e97ac552" class="">No GitHub, digitar o atalho <code><mark class="highlight-purple">.</mark></code> <mark class="highlight-default">no</mark> repositório abri o editor online</p></div></p><p id="571bd068-7694-4285-8aa3-29f5db87b0c6" class="">
+</p><p id="3067cff0-441e-4123-9a30-c1947e04d900" class=""><strong>Trabalhando com branches</strong><div class="indented"><p id="807e08f3-112f-4b57-b211-6b2fd71c31ee" class=""><mark class="highlight-purple"><code>echo &quot;#commit-0-branch-main&quot; &gt; commit-0-branch-main.txt</code></mark><mark class="highlight-purple"> </mark><mark class="highlight-default"> - criar um commit </mark></p><p id="93162d80-9763-454c-99eb-609f2fc89b2f" class=""><code><mark class="highlight-purple">git add .</mark></code><mark class="highlight-purple"> - </mark><code><mark class="highlight-purple">git commit -m”commit 0”</mark></code></p><p id="13e296d6-3755-4d4f-a431-53ae4e93652c" class=""><mark class="highlight-purple"><code>git checkout -b “NomeDaBranch’</code></mark> - mudar/criar nova branch</p><p id="325c942b-0e10-4911-a3b4-2a2cc167358b" class=""><mark class="highlight-purple"><code>git checkout “NomeDaBranch”</code></mark> - retornar a branch anterior</p><p id="1b3732e4-4cbc-4746-9f92-bc2cf4de5106" class=""><mark class="highlight-purple"><code>git branch -b </code></mark>- lista do último commit de cada branches</p><p id="cff1f3ff-bb94-44ea-b2df-597a969aad48" class=""><code><mark class="highlight-purple">git merge NomeDaBranch</mark></code> - mesclar a branch escolhida com a atual * para “importar” commits</p><p id="9171971e-29bf-46e3-9922-7a04f2686c55" class=""><mark class="highlight-purple"><code>git branch </code></mark>- lista de branchs</p><p id="f0fa5045-9285-4ec7-b1be-2280ac01b926" class=""><mark class="highlight-purple"><code>git branch -d NomeDaBranch </code></mark>- excluir a branch</p></div></p><ul id="c3603cc6-aab0-41d7-a954-70c8d0d61201" class="toggle"><li><details open=""><summary><strong>Alguns comandos git</strong></summary><p id="ffa8e2a6-b1a5-452d-8d2e-128ad8cd7d80" class=""><mark class="highlight-purple"><code>git fetch </code></mark>- baixar alterações (origin main) respectivamente repositório e branch</p><p id="a83c418a-92e9-4568-8ca6-02c6338fa8b3" class=""><mark class="highlight-purple"><code>git merge </code></mark>- mesclar alterações</p><p id="88e2cada-edf5-4a0c-b1ba-81a381ef2576" class=""><mark class="highlight-purple"><code>git pull </code></mark>= git fetch + git merge</p><p id="5e79050c-2aa6-443d-b0c7-e0af3378d2f3" class=""><mark class="highlight-purple"><code>git diff branch1/branch2</code></mark> - exibir diferença entre as branchs escolhidas</p><p id="8be8fe1c-dd9a-4e8e-b344-baadecf3b460" class=""><mark class="highlight-purple"><code>git stash</code></mark> - arquivar uma modifição</p><p id="3a08cbd0-83c8-4c19-93c4-327dee93a85a" class=""><mark class="highlight-purple"><code>git stash list</code></mark> - listar modificações arquivadas</p><p id="920b44fc-b50b-492d-803f-cb7891ca825d" class=""><code><mark class="highlight-purple">git stash pop</mark></code> - excluir a modificação da lista</p><p id="fd87edbb-7703-4cd0-b139-b66b1a1cbd76" class=""><mark class="highlight-purple"><code>git stash apply </code></mark>- manter a modificação arquivada da lista</p></details></li></ul><p id="9b456bd5-fcb7-42f7-8886-052e5c334c79" class="">
+</p><ul id="be6ec5ca-4926-47ca-805d-ebd32460c075" class="toggle"><li><details open=""><summary><strong>Materiais</strong></summary><div><p id="d08a3979-2b4b-4f30-8edd-e66ab105c549" class=""><a href="https://github.com/elidianaandrade/dio-curso-git-github/tree/main/materiais-de-apoio">Material de apoio Git e GitHub - Elidiana Andrade</a></p><p id="ea6a1e94-dc75-468c-977d-49742bb00802" class=""><a href="https://www.youtube.com/watch?v=4XpnKHJAok8">Tech Talk: Linus Torvalds on git</a></p><p id="61a5a1d7-1d76-4244-9d26-b6dea542ffc0" class=""><a href="https://git-scm.com/book/en/v2">Book - Pro Git</a></p><p id="d991efa7-e3f6-4ec5-8311-9818924ce951" class=""><a href="https://docs.github.com/pt/get-started/writing-on-github">Guia de Escrita no GitHub (Markdown)</a></p><p id="c0b22c8a-0c5b-4224-a5c6-8a1172592a92" class=""><a href="https://www.markdownguide.org/basic-syntax/">Sintaxe Básica Markdowm</a></p><p id="7c0e55f1-5734-4cf0-b2c9-55171bc84cf7" class=""><a href="https://www.gitfluence.com/">Git fluence - AI</a></p><p id="6e6e3990-a9d7-4c65-9b70-c3eb0e3b5cb1" class=""><a href="https://github.com/JuniorLima22/padroes-e-nomenclaturas-no-git">Padrões e nomeclaturas no Git</a></p></div><p id="90911392-a6cb-4927-ab0d-d8ce7e06364d" class="">
+</p></details></li></ul><hr id="c7c81a45-6c21-4763-9bca-ec0bb8543fb2"/><h1 id="a56ecaca-311c-4875-9f88-1fa68ac2546a" class="block-color-purple"><strong>Páginas HTML e CSS</strong></h1><h2 id="ea066242-5adf-430d-8e11-9eddd5d69ab2" class="">Comunicação Cliente x Server</h2><p id="27c74b49-9750-4f50-a54e-19f176325d44" class="block-color-purple"><strong>Clients &gt; Internet &gt; Servidor &gt;</strong> WebSever &gt; Database</p><div id="91bcf67e-6ada-4b36-ae8c-4d512ef8a759" class="column-list"><div id="b883af99-d926-49af-8663-1f67fccc1955" style="width:50%" class="column"><p id="46a8cca1-9269-4c50-be8e-ebd5665024ad" class="block-color-purple"><strong>Client side - Front end</strong></p><ul id="c25d39d4-d7d8-4de5-919d-ff501a564e2f" class="bulleted-list"><li style="list-style-type:disc">Velocidade de conexão</li></ul><ul id="3f1bc968-6028-45ed-b4aa-87440f20168f" class="bulleted-list"><li style="list-style-type:disc">Responsividade</li></ul><ul id="a2fddd15-47d1-4da3-8893-f99382fa1343" class="bulleted-list"><li style="list-style-type:disc">Navegadores &lt;<a href="https://www.w3schools.com/tags/ref_html_browsersupport.asp">https://www.w3schools.com/tags/ref_html_browsersupport.asp</a>&gt;</li></ul><ul id="14f92a2c-3085-4171-86c6-d5a65abb5aa4" class="bulleted-list"><li style="list-style-type:disc">Aplicação web &lt; Utilizam a internet como intermediador sem a necessidade de instalação &gt;</li></ul><p id="b29f2bd1-6df4-4f18-aae7-be3c2fc81949" class="">
+</p><p id="60ecbdb6-9731-4b57-b7b2-e130c57ec2eb" class="">Requisição http &gt;</p><ul id="ada5347d-4d03-459b-8d6e-b4a2aac38992" class="bulleted-list"><li style="list-style-type:disc">Sistema operacional</li></ul><ul id="4db783c0-7e98-4326-9302-57d865f5f531" class="bulleted-list"><li style="list-style-type:disc">Servidores Web</li></ul><p id="63a5794a-349a-49e2-af47-03f1adf62d3e" class="">
+</p><p id="e74cc13f-cf09-489b-8089-d7325a99c94e" class=""><strong>Linguagens de programação</strong><div class="indented"><p id="483d8e7b-c9d5-479b-9c26-e974f073efa1" class="">Dita conjunto de instruções para softwares</p><p id="412c6229-9661-4f1b-ae8a-762a4161af0e" class="">Server - PHP &gt; JS &gt; C# &gt; Ruby &gt; Java</p><p id="8aba3875-5ce8-4350-b422-79539afb2b06" class="">Client - JS &gt; (Chrome &gt; node js) - V8 program (interpretação)</p></div></p></div><div id="7bfec83a-8714-4982-bcd5-61c8cfeb4d47" style="width:50%" class="column"><p id="a1ae87eb-7e95-4b95-a7de-176624999fc5" class="block-color-purple"><strong>Sever side - Back -end</strong></p><ul id="559db43b-c788-450c-a73c-de1d15fba084" class="bulleted-list"><li style="list-style-type:disc">Servidor &lt; pode servir uma rede LAN</li></ul><p id="dddc144b-69e1-4052-a66b-0dcccc916614" class="">&lt; Funciona como um computador central</p><p id="2ec1ba5e-45f4-4335-a205-2280a8071449" class="">Tipos</p><ul id="4ecbb03d-0f29-4aad-a8f3-d18a743bca8e" class="bulleted-list"><li style="list-style-type:disc">Segurança</li></ul><ul id="d4d8fa4a-95e4-4396-9ed5-38e4f75aebed" class="bulleted-list"><li style="list-style-type:disc">Streaming</li></ul><ul id="b1612726-2b1b-4910-9efd-252f3db7c769" class="bulleted-list"><li style="list-style-type:disc">Email</li></ul><ul id="9326b927-9809-4463-8b23-a5e484d90766" class="bulleted-list"><li style="list-style-type:disc">Arquivos</li></ul><ul id="62cf3edb-0d33-4bda-b0e8-c88ff9d9b72d" class="bulleted-list"><li style="list-style-type:disc">Webs</li></ul><p id="fa6c044d-ba20-43a9-9a76-2b1038bb66ec" class="block-color-purple">Servidor = Lógica + Física</p><p id="0573f0e2-72d2-4ad1-a028-bcda1d873612" class="">
+</p><p id="c643b7ac-ac71-4fdc-9889-25b3f8c48648" class="">Servidor Proxy - intermediador do client &gt; internet</p><p id="073f3789-a58b-4f74-91d4-d282e6a734ff" class="">Servidor DNS - nome &gt; IP lista (domínio)</p><ul id="d4212c58-2c82-4774-a041-943a4c52da44" class="bulleted-list"><li style="list-style-type:disc">Internet vs intranet</li></ul><ul id="d1f50a8d-9945-42c9-9e97-503393871bb0" class="bulleted-list"><li style="list-style-type:disc">Hospedagens de sites &gt; contratar um servidor</li></ul><ul id="69e81067-90a2-4109-b11c-7274b0afbf8a" class="bulleted-list"><li style="list-style-type:disc">Conexão FTP (enviar arquivos) Filizila</li></ul><p id="6912d286-461d-4c37-b033-9cacff2bc109" class="">
+</p></div></div><hr id="02a54809-420e-4dfc-bd77-44b61c9bf291"/><h2 id="d2c23b6f-fe8e-40f5-921c-76b154c94309" class="">Intro HTML - HyperText Markup Language</h2><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="b86dbf46-3641-4227-a12b-ecc7758143f2"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_purple.svg"/></div><div style="width:100%">A Linguagem de Marcação de Hipertexto (HTML) é uma linguagem de computador que compõe a maior parte das páginas da internet e dos aplicativos online. Um hipertexto é um texto usado para fazer referência a outros textos, enquanto uma linguagem de marcação é composta por uma série de marcações que dizem para os servidores da web qual é o estilo e a estrutura de um documento.</div></figure><p id="dd678fe2-2317-4d72-9ffb-622062bca03a" class="">
+</p><p id="5582ec55-fc78-4947-b735-be07e25e6f6e" class="block-color-purple"><strong>Tags - </strong>são instruções que informam ao navegador como formatar o texto.</p><p id="ecc0bdde-92d2-4325-8179-2acab5df98b0" class="block-color-purple"><strong>Atributos -</strong> palavras especiais usadas dentro da tag  para controlar o comportamento do elemento.</p><div id="7e9d4eee-4b29-4393-9526-fdaceb2fc73f" class="column-list"><div id="3a017d3b-b4a9-4ca6-80a6-cba51a60485b" style="width:62.5%" class="column"><ul id="1ffa76d4-0dab-4d01-a5ce-10a24d885e51" class="block-color-default bulleted-list"><li style="list-style-type:disc"><strong>Tags básicas</strong></li></ul><table id="ed55c75c-1a7b-4ed1-baea-31b50c490758" class="simple-table"><tbody><tr id="c63f1c08-aa5f-424d-9baa-eed04e468173"><td id="wneb" class=""><a href="https://www.w3schools.com/tags/tag_doctype.asp">&lt;!DOCTYPE&gt;</a></td><td id="oMeK" class="">Defines the document type</td></tr><tr id="b06a2c2e-147a-45d0-8963-f843ff03bc67"><td id="wneb" class=""><a href="https://www.w3schools.com/tags/tag_html.asp">&lt;html&gt;</a></td><td id="oMeK" class="">Defines an HTML document</td></tr><tr id="b03275dd-0e86-4a8d-841c-33d31467bb73"><td id="wneb" class=""><a href="https://www.w3schools.com/tags/tag_head.asp">&lt;head&gt;</a></td><td id="oMeK" class="">Contains metadata/information for the document</td></tr><tr id="bddc5dda-fb21-45d6-8ae9-5b8b65094fc4"><td id="wneb" class=""><a href="https://www.w3schools.com/tags/tag_title.asp">&lt;title&gt;</a></td><td id="oMeK" class="">Defines a title for the document</td></tr><tr id="09ae119e-46ed-47dd-97d6-2c6f4afa8b42"><td id="wneb" class=""><a href="https://www.w3schools.com/tags/tag_body.asp">&lt;body&gt;</a></td><td id="oMeK" class="">Defines the document&#x27;s body</td></tr><tr id="35f42980-8e64-43ec-899d-2e2e5b0c9e02"><td id="wneb" class=""><a href="https://www.w3schools.com/tags/tag_hn.asp">&lt;h1&gt; to &lt;h6&gt;</a></td><td id="oMeK" class="">Defines HTML headings</td></tr><tr id="099c0574-14d7-4491-bc00-04a3743baff6"><td id="wneb" class=""><a href="https://www.w3schools.com/tags/tag_p.asp">&lt;p&gt;</a></td><td id="oMeK" class="">Defines a paragraph</td></tr><tr id="bbe44c33-d8a5-4d6d-b07c-9528e32b3d4f"><td id="wneb" class=""><a href="https://www.w3schools.com/tags/tag_br.asp">&lt;br&gt;</a></td><td id="oMeK" class="">Inserts a single line break</td></tr><tr id="4470c68f-e0e9-4bce-95f5-2251161a4c25"><td id="wneb" class="">&lt;blockquote&gt;</td><td id="oMeK" class="">Inserts a blockquote</td></tr><tr id="3857a65f-8e2a-4aeb-9ba0-756672f9cf2b"><td id="wneb" class="">&lt;u&gt;</td><td id="oMeK" class="">underline</td></tr><tr id="1cd7c759-4958-4d4a-9687-cff4cdb1caf6"><td id="wneb" class="">&lt;i&gt;</td><td id="oMeK" class="">italic</td></tr><tr id="6ebce62d-c967-48e5-b21f-9aaaf124f80c"><td id="wneb" class="">&lt;b&gt; &lt;strong&gt;</td><td id="oMeK" class="">Bold</td></tr><tr id="0ba755b2-b707-401d-b8f6-cf89cdb29631"><td id="wneb" class="">&lt;ol&gt; &lt;li&gt;</td><td id="oMeK" class="">Lista ordenada</td></tr><tr id="952ab822-892b-40c9-b1a4-448aac6ae2df"><td id="wneb" class="">&lt;ul&gt; &lt;il&gt;</td><td id="oMeK" class="">Lista não ordenada</td></tr><tr id="5564ac44-9d25-41f6-95f9-5b2c63801baa"><td id="wneb" class="">&lt;sub&gt;</td><td id="oMeK" class="">Defines subscripted text</td></tr><tr id="8dc21ba2-1882-454c-ad89-39dc96ee8d6f"><td id="wneb" class="">&lt;sup&gt;</td><td id="oMeK" class="">Defines superscripted text</td></tr><tr id="a24fb914-1df9-4d32-a7cf-11c8db6ce093"><td id="wneb" class="">&lt;font&gt;</td><td id="oMeK" class="">change font formatting depending on attribute</td></tr></tbody></table></div><div id="17a04bb7-dadb-433d-a4e5-3a7ab1a75379" style="width:37.5%" class="column"><ul id="655382e9-dbac-46fc-83f2-d5d99296559c" class="bulleted-list"><li style="list-style-type:disc"><strong>Atributos básicos</strong></li></ul><p id="b35b361b-6086-4f6d-bb0d-3680dfd53e69" class=""><mark class="highlight-purple"><strong>id=”NomeDoId” -</strong></mark> É utilizado para identificar de forma única um elemento naquela página HTML</p><p id="994b5bc8-a200-4594-9976-2e5bd3e45a2d" class="">
+</p><p id="b1a0a0f7-4cfd-497b-b5c9-ba24f1d06d74" class=""><mark class="highlight-purple"><strong>src=”Link ou diretório da mídia&quot;</strong></mark><br/>Comumente utilizado para indicar para a tag qual arquivo ou mídia utilizar.<br/></p><p id="7c049d4d-0e8f-4953-be24-a335db4134ad" class="">
+</p><p id="d2928f98-403a-445d-bf2c-7471f48f2341" class=""><mark class="highlight-purple"><strong>href=”Url” -</strong></mark><strong> </strong>Para a tag , o atributo href especifica a URL da página para a qual o link vai.</p><p id="a5dc156e-db19-4a39-9eff-80510b316c60" class="">
+</p><hr id="9d939852-d3aa-4873-96c8-6f0e6c84c0c8"/><p id="c9c8fe93-da1f-425f-9beb-0f00009174f0" class="">
+</p><p id="673595d3-7645-44b4-af08-0d520dd701ba" class=""><strong>Tags e atributos de links</strong></p><ol type="1" id="dae522c8-166b-4b37-be9a-f3463808a6da" class="numbered-list" start="1"><li>Link self</li></ol><ol type="1" id="21fd05aa-ce57-41b4-8b80-3c79aefc4bc2" class="numbered-list" start="2"><li>Link abrir em outra página</li></ol><ol type="1" id="7883678e-fffd-4241-8e9f-8ce409a9b1c9" class="numbered-list" start="3"><li>Link com descrição de balão</li></ol><ol type="1" id="aceebd35-2554-4094-b9cd-c3d89ec24221" class="numbered-list" start="4"><li>Link no prórpio site</li></ol><p id="77ec4de2-458c-4964-9b65-57aa8376a1b0" class="">&gt;&gt;&gt;&gt;</p><p id="f624ca98-76cf-4ed1-b825-5fa86bf93152" class="">
+</p></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="636a0087-3341-455e-b7c4-7683522e92f9" class="code"><code class="language-HTML">&lt;a href=&quot;linkdosite&quot;&gt;Textodolink&lt;/a&gt;
+&lt;a href=&quot;linkdosite&quot; target=&quot;_blank&quot;&gt; Textodolink&lt;/a&gt;
+&lt;a href=&quot;linkdosite&quot; title=&quot;Descriçãodobalão&quot; target=&quot;_blank&quot;&gt; Textodolink&lt;/a&gt;
+&lt;a href=&quot;Nomedoarquivo&quot; title=&quot;Descriçãodobalão&quot;&gt; Textodolink&lt;/a&gt;</code></pre><p id="f6f4ede3-95cf-4b04-81e0-7bc6d09a29e3" class="">
+</p><hr id="9d765d1b-0efc-4d4b-9bbc-d46ee245211f"/><h2 id="f168e156-9998-4be7-8a7f-a04d55430f09" class="">Formulário HTML</h2><p id="93219ffb-e1d8-4967-925e-05e10e9bab74" class=""><strong>Tag &lt;form&gt;</strong></p><div id="76afdb0f-4e5d-43ef-943e-c89b871f01e1" class="column-list"><div id="f7e39898-334f-4a84-a7f3-74f069d034f2" style="width:50%" class="column"><p id="2026abc3-6e62-452b-b7a2-faa69d05e27d" class=""><mark class="highlight-purple"><strong>Atributo - Method</strong></mark></p><p id="4de1c086-c2db-4574-9bfa-bc4413ad2303" class="">Manda as informações na url -</p><p id="4336f20c-674a-49ac-a813-a802e5bb4845" class=""><mark class="highlight-purple"><code>&lt;form name=&quot;signup&quot; method=&quot;GET&quot;&gt;<br/>&lt;/form&gt;<br/></code></mark><code><br/><br/></code></p><p id="514326aa-e028-430f-80b2-5ffe9bb916ac" class="">Não manda as informações pela url<br/><br/><code><mark class="highlight-purple">&lt;form name=&quot;signup&quot; method=&quot;POST&quot;&gt;<br/>&lt;/form &gt;<br/></mark></code></p></div><div id="810dd15a-d75f-4d6f-a495-f9dd05761fde" style="width:50%" class="column"><p id="6c12efc8-5356-4c46-bcf2-c1516549e647" class=""><mark class="highlight-purple"><strong>Atributo - Autocomplete</strong></mark></p><p id="29f7e520-ca73-4acb-968b-655d55b237e1" class="">Retorna com as informações</p><p id="6a2f103f-ac38-455c-b692-5fc7b2e7b721" class=""><mark class="highlight-purple"><code>&lt;form name=&quot;signup&quot; aucomplete=&quot;on&quot;&gt;<br/>&lt;/form&gt;<br/></code></mark></p><p id="550cfd7d-2996-4efc-97c7-94f4b197be58" class="">
+</p><p id="a410233d-92f3-4787-b1e9-e8b47773df09" class="">Não retorna com as informações</p><p id="f1220e3f-e232-40bb-aa52-ba0e7ccd2604" class=""><mark class="highlight-purple"><code>&lt;form name=&quot;signup&quot; aucomplete=&quot;off&quot;&gt;<br/>&lt;/form&gt;<br/></code></mark></p></div></div><hr id="76dbecf2-9ad6-45a0-b8f1-a32cce6e8e26"/><p id="d616e71d-2c13-4869-a9ce-01e1028bd6e7" class="">
+</p><p id="b0123d0e-66c3-4c26-a070-8b10639b8396" class=""><strong>Tag &lt;input&gt;</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d39a8a29-58d6-4be8-8faf-eb447e8e2e4d" class="code"><code class="language-HTML">&lt;html&gt; 
+&lt;body&gt;
+&lt;form&gt;
+
+&lt;label&gt;Text: &lt;/label&gt;&lt;input type=&quot;text&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Number: &lt;/label&gt;&lt;input type=&quot;number&quot; min=&quot;0&quot; step=&quot;5&quot; max=&quot;99&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Range: &lt;/label&gt;&lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;90&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Color: &lt;/label&gt;&lt;input type=&quot;color&quot; /&gt;&lt;br&gt;
+&lt;label&gt;E-mail: &lt;/label&gt;&lt;input type=&quot;email&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Url: &lt;/label&gt;&lt;input type=&quot;url&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Date: &lt;/label&gt;&lt;input type=&quot;date&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Week: &lt;/label&gt;&lt;input type=&quot;week&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Month: &lt;/label&gt;&lt;input type=&quot;month&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Checkbox: &lt;/label&gt;&lt;input type=&quot;checkbox&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Radio: &lt;/label&gt;&lt;input type=&quot;radio&quot; name=&quot;aceita&quot; /&gt;&lt;br&gt;
+&lt;label&gt;Hidden: &lt;/label&gt;&lt;input type=&quot;hidden&quot;/&gt;&lt;br&gt;
+&lt;label&gt;File: &lt;/label&gt;&lt;input type=&quot;file&quot;/&gt;&lt;br&gt;
+&lt;label&gt;Search: &lt;/label&gt;&lt;input type=&quot;search&quot;/&gt;&lt;br&gt;
+&lt;label&gt;Button: &lt;/label&gt;&lt;input type=&quot;submit&quot; value=&quot;Enviar&quot; /&gt;&lt;br&gt;
+
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="70a79abb-3984-4ca4-996a-9e9ec9c190ac" class="">
+</p><p id="48bf24b7-a67b-41c2-95d2-02db0aa2ba2f" class="">
+</p><p id="b39d926f-85d5-498a-9a3f-9c0a32026961" class=""><strong>Tag &lt;checkbox&gt; e &lt;radio&gt;</strong></p><p id="acb10d55-b370-4420-9c04-bca5dc9a35de" class=""><mark class="highlight-purple"><code> method=&quot;get&quot;</code></mark><mark class="highlight-purple"> </mark><mark class="highlight-default">- envia só o último valor da lista&gt; para considerar todos os valres do checkbox envia -se </mark><mark class="highlight-purple"><code>name=”nomeescolhido[]”</code></mark></p><p id="eb056936-f281-4ef8-b170-95ac38d6a1c6" class=""><mark class="highlight-purple"><code>disable </code></mark>- desativar uma função ainda permitindo visibilidade</p><p id="729b1cef-1e07-47f6-83e1-61a9d6988308" class=""><strong>Tag &lt;button&gt;</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="b69f9fda-0ca1-4a4b-b3e3-c5d7b1d5d141" class="code"><code class="language-HTML">&lt;form&gt;
+&lt;body&gt;
+&lt;form onsubmit=&quot;&quot; method=&quot;get&quot;&gt;
+&lt;label&gt;Nome*: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;name&quot;&gt;&lt;br&gt;
+&lt;label&gt;Idade*: &lt;/label&gt;&lt;input type=&quot;number&quot; name=&quot;age&quot;&gt;&lt;br&gt;
+&lt;label&gt;Password*: &lt;/label&gt;&lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
+&lt;button type=&quot;submit&quot;&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="b6ef3dc5-b682-4ccd-aaea-5ec48c35f043" class=""><strong>Tag &lt;select&gt;</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="bb4c5d2a-4f1c-41ea-bcb8-f3e9a252ed72" class="code"><code class="language-HTML">&lt;body&gt;
+&lt;form onsubmit=&quot;&quot; method=&quot;get&quot;&gt;
+&lt;label&gt;Nome: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;name&quot;&gt;&lt;br&gt;
+&lt;label&gt;Cargo: &lt;/label&gt;
+&lt;select name=&quot;role&quot;&gt;
+&lt;option value=&quot;&quot;&gt;Selecione o cargo&lt;/option&gt;
+&lt;option selected value=&quot;gerente&quot;&gt;Gerente&lt;/option&gt;
+&lt;option value=&quot;diretor&quot;&gt;Diretor&lt;/option&gt;
+&lt;option value=&quot;presidente&quot;&gt;Presidente&lt;/option&gt;
+&lt;/select&gt;
+&lt;br&gt;
+&lt;label&gt;Assunto: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;subject&quot;&gt;&lt;br&gt;
+&lt;button type=&quot;submit&quot;&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="3d5082fb-de19-45e8-8f60-9750a4396ff5" class=""><strong>Tag &lt;textarea&gt;</strong></p><hr id="dd485cdb-bd28-482e-b48c-abc18e45ae44"/><h2 id="908800b2-1fe2-48e6-91ac-c6db55ed7dd9" class="">Formatação HTML</h2><p id="2c3f296d-d028-4ef5-ab48-15479dcfeebb" class=""><br/><br/><strong>&lt;font&gt;</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="58a1de3a-6d49-4664-a18e-66fba0538982" class="code"><code class="language-HTML">&lt;body&gt;
+&lt;font color=&quot;red&quot; face=&quot;Arial, Tahoma&quot;&gt;Programe&lt;/font&gt; o seu futuro global agora!
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="1642852a-25a1-4268-a34d-1d658f3fa1fc" class=""><br/><br/><strong>Tag &lt;div&gt; e &lt;span&gt;</strong></p><p id="de0874f8-c561-483f-81ea-b55f66935da1" class=""><mark class="highlight-purple"><strong>div -</strong></mark><mark class="highlight-purple"> </mark><mark class="highlight-default">cria um bloco genérico para agrupar conteúdos</mark></p><p id="52cd9b46-7a27-4f42-80df-6ebe833d991a" class=""><mark class="highlight-purple"><strong>span -</strong></mark> Ela é usada para modificar propriedades do texto, ou separar partes do texto</p><p id="09ab0482-05a2-4cf0-8bf2-18464c52bbc1" class="">Diferenças - com a única diferença que enquanto a tag span serve ao código a nível de linha, a tag div serve ao código a nível de bloco</p><p id="a20afb9b-b8ec-4dee-bec7-6856f7b1f4cc" class=""><strong><br/>Tag &lt;fieldsets&gt; <br/></strong>-agrupa elementos, dentro de um formulário web.<strong><br/>Tag &lt;embeds&gt; <br/></strong>- incorpora conteúdo de terceiros no seu próprio blog ou sit<strong>e<br/>Tag &lt;iframes&gt;<br/></strong></p><p id="8a4c85c8-fdbe-46d9-90bf-3f17fac51588" class=""><strong>Diferença - </strong>o formato iframe é um código mais limpo e permite carregar websites inteiros, já o formato embed é o formato tradicional utilizado e aceito na maioria de sites e blogs e carrega apenas mídias.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2c947b7a-67c1-4e3e-b7ed-d5873ece823b" class="code"><code class="language-HTML">&lt;body&gt;
+&lt;h1&gt;Embeds&lt;/h1&gt;
+&lt;embed src=&quot;videoescolhido&quot; width=&quot;400&quot; height=&quot;250&quot;&gt;
+
+
+&lt;h1&gt;Alternativa com tag video &lt;/h1&gt;
+&lt;video width=&quot;400&quot; height=&quot;250&quot;&gt;
+&lt;source src=&quot;trailer.mp4&quot;&gt;
+&lt;/video&gt;
+
+&lt;h1&gt;Iframe do site DIO &lt;/h1&gt;
+&lt;video width=&quot;400&quot; height=&quot;250&quot;&gt;
+&lt;source src=&quot;trailer.mp4&quot;&gt;
+&lt;/video&gt;
+
+&lt;/body&gt;</code></pre><hr id="fbb8292d-50f4-454d-916f-a847900fc825"/><h2 id="3c40af45-ffb4-45c9-b137-d92830a7244a" class="">Intro CSS - Cascading Style Sheets</h2><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="b608e0d3-c57c-488a-84c4-9d59df9194fa"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_purple.svg"/></div><div style="width:100%"><strong>CSS </strong>é usado para estilizar elementos escritos em uma linguagem de marcação como <strong>HTML</strong>. O CSS separa o conteúdo da representação visual do site.</div></figure><p id="bc23e848-253e-47ce-9813-c819c20626e9" class="">Estrutura &gt; Propriedade: valor</p><p id="0f347cbc-8775-4c25-8035-418669273c77" class="">
+</p><p id="ca08ada8-d737-4fa0-8293-4585db00ef7e" class=""><mark class="highlight-purple"><strong>Formas de declarar</strong></mark></p><ul id="987d583a-6981-4a2d-87bb-f14c63097edc" class="bulleted-list"><li style="list-style-type:disc">CSS Inline *não muito utilizada - estilizar o código inline com a tag style</li></ul><ul id="1c371429-e740-4a2c-b5ba-f7900b993708" class="bulleted-list"><li style="list-style-type:disc">CSS Interno - O CSS interno adiciona a tags &lt;style&gt; na seção &lt;head&gt; do seu documento HTML para padronização.</li></ul><ul id="ce518e2a-9db3-4a07-8d73-17ab14b54d64" class="bulleted-list"><li style="list-style-type:disc"><strong>CSS Exetrno *mais utilizado - os códigos CSS ficam em um documento externo ao documento HTML sendo referenciada por um link</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="0782bf96-16b9-4366-92c1-138ed15a7897" class="code"><code class="language-HTML">&lt;link href=&quot;estilos/estilo.css&quot; rel=&quot;stylesheet&quot; /&gt;</code></pre><p id="fb9ea8c6-3161-47a7-903d-6f88cc0e2145" class="">
+</p><h3 id="75c2972b-f2c9-409f-a0cc-1e4a9bb9c48e" class="block-color-purple"><strong>Anatomia de um conjunto de regras CSS</strong></h3><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="0b542577-0710-4d95-ae2a-3c1cc48cb541"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_gray.svg"/></div><div style="width:100%"><strong><mark class="highlight-purple">Partes da sintaxe:</mark></strong><ul id="2b120bba-36c3-4d8c-a7bf-01de14b033a8" class="bulleted-list"><li style="list-style-type:disc">Cada linha de comando deve ser envolvida em chaves (<mark class="highlight-purple"><code>{}</code></mark>).</li></ul><ul id="093f8868-e3ce-471f-9b8a-4516f740b888" class="bulleted-list"><li style="list-style-type:disc">Dentro de cada declaração, você deve usar dois pontos (<mark class="highlight-purple"><code>:</code></mark>) para separar a propriedade de seus valores.</li></ul><ul id="337675b6-a1db-4ef2-add3-e63f74f7b2c4" class="bulleted-list"><li style="list-style-type:disc">Dentro de cada conjunto de regras, você deve usar um ponto e vírgula (<mark class="highlight-purple"><code>;</code></mark>) para separar cada declaração da próxima.</li></ul><p id="0adaab5f-d5d3-4d2f-bfa6-58fe50dc922d" class=""><br/>Tipo &gt;<br/>Declaração  .<br/>Propriedade &gt;<br/>Valor da propriedade &gt;<br/></p><p id="5ee3e663-1b0b-475f-b8ef-a9d56de248d6" class="">
+</p><p id="b353b795-e282-4a23-907f-fb7f9fe93683" class="">*<strong>É recomendável que se use, sempre, o ponto-e-vírgula após cada declaração CSS</strong>, pois no caso de futuramente ter que se acrescentar mais declarações na regra CSS não se corra o risco de esquecer eventual ponto-e-vírgula inicialmente omitido.</p><p id="d39a4c21-1538-434e-b1db-a956b3bdfe62" class="">
+</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="fc8c19e2-ed44-4e2b-acfd-f699fea461bb" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">/* Global values */
+inherit;
+initial;
+revert;
+revert-layer;
+unset;</code></pre></div></figure><p id="f04c11a5-093e-4d27-a403-8b35c665d01f" class="">*A técnica reset.css redefine padrões nos navegadores que sofrem alguma alteração</p><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Seletor</mark></summary><div class="indented"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="e0ff092d-e105-486a-a317-43fff387955a"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_gray.svg"/></div><div style="width:100%">Um seletor CSS é a primeira parte de uma regra CSS. É um padrão de elementos e outros termos que informam ao navegador quais elementos HTML devem ser selecionados para que os valores das propriedades CSS dentro da regra sejam aplicados a eles. O elemento ou elementos selecionados pelo seletor são chamados de assunto do seletor .</div></figure><p id="1079ddb4-7bc2-4cb8-a717-89448eedf939" class="">* Configura um agrupamento de seletores</p><p id="f2705fad-8ac8-4914-af96-fc756d6d7a77" class="">
+</p><p id="d4ce24a0-1f7d-4d83-a690-1ddde902adeb" class="">
+</p><p id="e15604fb-703e-429b-b606-8412cfbadc34" class=""><strong>Tag - </strong>seleciona todos os elementos dentro da tag.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="c5021206-3c0f-4610-b8af-993e2a14d62c" class="code"><code class="language-CSS">&lt;p&gt;Esse parágrafo será azul.&lt;/p&gt;</code></pre><p id="504da3cb-3a5c-4ca3-8670-b8eaa1e1e9c5" class="">
+</p><p id="87148ff4-4559-4d8a-a0bc-915c46bb5dbc" class=""><strong>Classe - </strong>O seletor de classe seleciona elementos com base na classe CSS que possuem.</p><p id="96715377-ef97-49c7-882b-2276e42db1b5" class="">Exemp. <code>.exemplo { font-size: 20px; }</code></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="6f8f6e68-6ca4-404a-9a42-342804572587" class="code"><code class="language-CSS">&lt;p&gt; class=&quot;exemplo&quot; Este parágrafo terá tamanho de fonte 20px.&lt;/p&gt;</code></pre><p id="d93dcfba-2652-453c-808f-8784615f42dc" class="">
+</p><p id="be0dd174-480c-4420-b649-86a916f55fb9" class=""><strong>ID -</strong> O seletor de ID é como um foco preciso em um único elemento que possui um ID específico.</p><p id="671c4b18-cd14-4931-8e0e-868c1e545bcd" class="">Exemp. <code>#unico { background-color: yellow; }</code></p><p id="20aaab7f-e2cc-4913-8af4-09abc92f64e2" class="">
+</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="00825bf0-1513-447d-9151-642de39a4926" class="code"><code class="language-CSS">&lt;div id=&quot;unico&quot;&gt; O fundo deste div será amarelo.&lt;/div&gt;</code></pre><p id="5a913d9e-f540-4478-b86b-681505ab06e5" class="">
+</p><p id="6d8c0c39-759a-4747-a91c-8ae711b9b020" class=""><strong>Universal - </strong>O seletor universal * pode afetar todos os elementos da sua página.</p><p id="4540101e-13cf-44e6-bac7-54a95e207f56" class="">Exemp. </p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="8ef6fca2-9d98-4acf-ac08-34dbfb026749" class="code"><code class="language-CSS">* {  margin: 0;
+  padding: 0;
+}</code></pre><p id="1b439aad-2751-4ddb-9a5e-83aa9465596b" class="">
+</p><p id="ce654215-f278-4559-9e64-497aac4da726" class=""><strong>Atributo -</strong> O seletor de atributo seleciona elementos baseados nos atributos que eles possuem. Por exemplo,<mark class="highlight-purple"> </mark><mark class="highlight-purple"><code>a[target=&quot;_blank&quot;] { color: red; }</code></mark> irá colorir de vermelho todos os links que abrem em uma nova aba.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="88acd71c-d638-4204-a825-9da135ac11cc" class="code"><code class="language-CSS">&lt;a href=&quot;https://www.exemplo.com&quot; target=&quot;_blank&quot;&gt;Este link será vermelho.&lt;/a&gt;</code></pre></div></details><hr id="8c8f71f5-8a17-471c-9b1a-1e1f08f062e6"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Combinadores</mark></summary><div class="indented"><p id="58d5d4ee-e6ec-4464-b9a9-55cefe8c7492" class="">
+</p><p id="233d58b3-3135-4125-a769-36b22a71bd4d" class=""><strong>Agrupamento de seletores</strong></p><p id="b6bd845c-7425-4802-9b05-0c2b69e2f00b" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="8bfe106e-4113-43a9-899a-774ad4be6bf2" class="code"><code class="language-CSS">h1,
+..special {
+  color: blue;
+}</code></pre><p id="bf85fdc3-8fe5-46bc-8edf-f4453b5c4973" class="">
+</p><div id="2336cf06-3d0b-4ebc-976b-23eda3c61b03" class="column-list"><div id="f7e99f13-cced-4c46-988e-5a3692bbfe40" style="width:50%" class="column"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="7ab7f927-584a-405c-aaa9-f0a05deb5673" class="code"><code class="language-CSS">p, h3, span {
+font-family: arial, sans-serif;
+font-size: 12 px;
+color: #000000;
+background-color: #0000FF;
+}
+h3 { font-size: 16px;}
+</code></pre></div><div id="3c5c1673-9ec5-4c6d-a903-07004a29b158" style="width:50%" class="column"><p id="77936fe9-3ea1-4f8c-984c-370f09070f40" class="block-color-default">*A primeira regra determina para &lt;h3&gt; tamanho de fonte de 12px e após, vem a segunda regra que determina 16px para aquele tamanho. Pelo efeito cascata vale a segunda regra para o tamanho de fonte de &lt;h3&gt; e as demais propriedades conforme a primeira regra. Não foi preciso escrever a regra completa para &lt;h3&gt; em separado.</p></div></div><div id="8f20b4c4-1adf-4424-8daf-5343ef86a11e" class="column-list"><div id="e3198d7f-c174-4543-a4fd-4a5398b4299b" style="width:50%" class="column"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="26f7f2cd-ae83-4ec8-bfd5-710543fea2db" class="code"><code class="language-CSS">p.texto {
+font-family: arial, sans-serif;
+font-size: 12 px;
+color: #000000;
+background-color: #0000FF;</code></pre></div><div id="50fe76ba-4df4-41ac-ba53-a5c8eb1db2dd" style="width:50%" class="column"><p id="31120fe0-542a-4c54-984e-15f74e683f44" class="block-color-default">*Agrupa o requisito para que só os elementos que tenham &lt;p&gt; e a classe “texto” obedeçam</p><p id="2eab241a-0981-40eb-a6ae-1e4b87911b8e" class="">
+</p></div></div><p id="b9c28f48-9af7-44fd-b29b-8d0502026151" class=""><strong>Combinador descendente </strong>- permite estilizar elementos que são filhos diretos ou descendentes de outro elemento</p><p id="57479a25-f3d4-48e0-9cdd-b43bf6dcf4b5" class="">Exemp. Estilizar um parágrafo dentro do containêr / estilizar uma lista</p><div id="d96c8e54-e281-4836-b6df-1bef7c559cce" class="column-list"><div id="319e2119-6fcf-4289-a160-eb9bda7baab6" style="width:50%" class="column"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ce7a2b73-3b98-455a-8c36-67a957810cde" class="code"><code class="language-CSS">&lt;div class=&quot;container&quot;&gt;
+&lt;h2&gt;Título&lt;/h2&gt;
+&lt;p&gt; Parágrafo.&lt;/p&gt; 
+&lt;/div&gt;
+
+.container p {
+font-style: italic;
+}</code></pre><p id="61d5038a-a24d-49cb-a5f4-1040f49f4aba" class="">
+</p></div><div id="654cf205-a96e-4107-8062-54f24333d53b" style="width:50%" class="column"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d66e0344-ec0b-4e96-b713-ad04dbca08a7" class="code"><code class="language-CSS">&lt;ul class=&quot;menu&quot;&gt;
+&lt;li&gt;Item 1&lt;/li&gt;
+&lt;li&gt;Item 2&lt;/li&gt;
+&lt;/ul&gt;
+
+.menu li {
+list-style: square;
+}</code></pre></div></div><div id="56cb10aa-9b2f-4a35-8e73-59d6eb4f87ed" class="column-list"><div id="0472d814-bbe1-4a79-ae1d-5ff338a5960a" style="width:50%" class="column"><p id="626a38a9-c2b7-41b9-8b87-75b4439ca701" class=""><strong>Combinador filho (&gt;) </strong>- seleciona todos os elementos que são filhos de um elemento especificado.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="4c23ba96-f31e-4316-b249-b1ef1863231e" class="code"><code class="language-CSS">div &gt; p {
+  background-color: yellow;
+}</code></pre></div><div id="2341046e-980b-4dc2-9f8b-571a02b3f01f" style="width:50%" class="column"><p id="89b6e886-cd22-48c4-b69f-54f294e0ac0c" class=""><strong>Combinador Irmão (+) -</strong>  é usado para selecionar um elemento que está diretamente após outro elemento específico.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="aaf87295-8027-45b6-9168-c3a8c4d62015" class="code"><code class="language-CSS">div + p {
+  background-color: yellow;
+}</code></pre></div></div></div></details><hr id="9bfa39ae-deea-4dfa-a3a1-a1a5993adca1"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Dimensionamento e Espaçamento</mark></summary><div class="indented"><div id="a8a4b4e5-8101-4128-9783-aca5f296c6ab" class="column-list"><div id="317446f2-8157-4bdb-b0a2-d9e48597eb4e" style="width:43.75%" class="column"><figure id="82308973-18c3-4453-b372-66bb38fe9d8e" class="image" style="text-align:left"><a href="Princi%CC%81pios%20de%20Desenvolvimento%20de%20Jogos%205ebed5f45258469cb8db08827754d346/Untitled.png"><img style="width:336px" src="Princi%CC%81pios%20de%20Desenvolvimento%20de%20Jogos%205ebed5f45258469cb8db08827754d346/Untitled.png"/></a></figure><p id="36a01fe7-b2be-461c-bfc7-e6b292267797" class="">
+</p></div><div id="f567359b-3d8a-4f10-909c-f07edafc8a56" style="width:56.25%" class="column"><p id="b649430a-2e30-4927-b110-4fee5fc9fa10" class="">*as propriedades <mark class="highlight-purple"><code>height</code></mark>e <mark class="highlight-purple"><code>width</code></mark>não incluem preenchimento, bordas ou margens! Eles definem a altura/largura da área dentro do preenchimento, borda e margem do elemento</p><p id="f0e0ca9f-3ea1-4c21-82f3-de9f9823b6cb" class="">
+</p><p id="6c990980-ff45-4e26-8707-a090c9c7588d" class="">As propriedades <mark class="highlight-purple"><strong>height</strong></mark> e <mark class="highlight-purple"><strong>width</strong></mark> podem ter os seguintes valores:&gt;&gt;&gt;</p></div></div><p id="88f00154-3873-493c-a562-2a2f88fa4f43" class=""><mark class="highlight-purple"><code>auto</code></mark>- Este é o padrão. O navegador calcula a altura e a largura</p><p id="87a49b88-43ba-420d-9a6e-f13c778116f8" class=""><mark class="highlight-purple"><code>length</code></mark> - Define a altura/largura em px, cm etc.</p><p id="44f3fd72-224d-41fc-89b9-e4bed7395d82" class=""><mark class="highlight-purple"><code>% </code></mark>- Define a altura/largura em porcentagem do bloco que contém</p><p id="146bb62d-1799-4c63-96f9-a128ca729dfb" class=""><mark class="highlight-purple"><code>initial </code></mark>- Define a altura/largura para seu valor padrão</p><p id="7c734706-2fc1-44f4-8017-d65d5b83f750" class=""><mark class="highlight-purple"><code>inherit </code></mark>- A altura/largura será herdada de seu valor pai</p><p id="dad21a63-eba9-4e74-86bd-688024b0b34a" class=""><mark class="highlight-purple"><code>max-width</code></mark> é usada para definir a largura máxima de um elemento.</p><p id="677f4b83-cd09-46ee-8011-44fed3576867" class=""><mark class="highlight-purple"><code>min-width</code></mark> - é usada para definir a largura mínima de um elemento.</p><p id="ca84ec7a-556b-473b-8115-71f2d31c23d5" class=""><mark class="highlight-purple"><code>max-heigth</code></mark> - é usada para definir a altura máxima de um elemento.</p><p id="be3a8a41-19f5-47f2-985a-f8bede20dfe6" class=""><mark class="highlight-purple"><code>min-heigth</code></mark> - é usada para definir a altura mínima de um elemento.</p><div id="1b07334b-546f-45fa-9792-054886ae11a3" class="column-list"><div id="e23ab278-914f-4d82-868e-c89559745bda" style="width:50%" class="column"><p id="e1f43f70-d98d-458e-872b-efc14263c215" class="">Exemp. elemento &lt;div&gt; de 100px por 500 px</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="fb0ed7b0-935d-48be-9a60-8396b421c361" class="code"><code class="language-CSS">div {
+  height: 200px;
+  width: 50%;
+  background-color: powderblue;
+}</code></pre></div><div id="7c787ea2-d2f0-4238-8316-feacf7f0361f" style="width:50%" class="column"><p id="367c4b50-3931-492d-b05c-828eb1b44bdf" class="">Exemp. Definindo altura máxima</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="194265b1-9aa2-4caf-8d48-1d946637c6ec" class="code"><code class="language-CSS">div {
+  max-width: 500px;
+  height: 100px;
+  background-color: powderblue;
+}</code></pre><p id="ec49a3bd-64a1-479a-877a-0bedbe0b5e35" class="">
+</p></div></div><p id="f226532e-7302-461a-bf4b-1928dedb72cc" class="">
+</p><p id="db0509a5-c0c7-4f1b-935e-e3248c3ffa94" class=""><strong>Margin - define a área de margem nos quatro lados do elemento *pode ter valores neativos</strong></p><div id="f5b678c2-37a9-4b1c-ac07-39366af7f6d5" class="column-list"><div id="66b3529a-6e24-4fb1-8abf-e077cfb64992" style="width:31.25%" class="column"><p id="1f9268b5-c694-4c13-8881-7161c56be8d8" class="">Propriedades para especificar a margem para cada lado de um elemento:</p><p id="b0d7ad2c-5dd1-4a1f-b0bc-4c35dd6f7fff" class=""><mark class="highlight-purple"><code> margin-top </code></mark></p><p id="6eeae65a-d803-43dd-b2ad-44b56514f195" class=""><mark class="highlight-purple"><code> margin-right </code></mark></p><p id="9bd5b032-b9b8-46b3-bb6d-e6471b61a980" class=""><mark class="highlight-purple"><code> margin-bottom  </code></mark></p><p id="4850664e-275a-42e4-851f-f030f64bf009" class=""><mark class="highlight-purple"><code> margin-left</code></mark></p></div><div id="293eb2b9-5a39-4dcf-82eb-591c11d81092" style="width:68.75%" class="column"><p id="1c79185c-d7ac-49c1-b3b3-bd023197c84d" class="">As propriedades de margin podem ter os seguintes valores:</p><p id="b22e729a-18fe-4171-9d68-ebe0a60c7bd4" class=""><mark class="highlight-purple"><strong>auto </strong></mark>- calcula a margem centralizada automaticamente<br/><br/><mark class="highlight-purple"><strong>comprimento(lenght) </strong></mark>- especifica uma margem em mededas, como,  px, pt, cm, etc.</p><p id="00c8084c-593e-44ed-9b10-47130ffbee23" class=""><mark class="highlight-purple"><strong>Initial</strong></mark> - assume o valor padrão para o elemento de acordo com o navegador;<br/><br/><mark class="highlight-purple"><strong>herdar(inherit)</strong></mark>- especifica que a margem deve ser herdada do elemento pai</p></div></div><p id="3a3d7e33-7efe-4bbe-989c-50e6d83239b5" class="">
+</p><div id="078f160e-a5c3-4704-8be8-b7352854d146" class="column-list"><div id="606ad676-db21-4f3c-83f6-4c67c157f4df" style="width:50%" class="column"><p id="4c59a5de-989d-4730-9338-fd18b2c344b5" class="">Exemp. Valores únicos para todas as margens</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2bc6a035-e876-483c-bdee-3d3689a944bb" class="code"><code class="language-CSS">p {
+  margin: 25px;
+}</code></pre><p id="8c5cb890-254b-4ac6-a030-de670842e0d6" class="">Exemp. margem herdada</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="dd28f7f3-c437-4376-ac5e-3c0a83d19e43" class="code"><code class="language-CSS">div {
+  border: 1px solid red;
+  margin-left: 100px;
+}
+
+p.ex1 {
+  margin-left: inherit;
+}</code></pre></div><div id="17f10857-97cf-4df6-98b3-99d9961482ce" style="width:50%" class="column"><p id="79428427-50fb-4ea8-b9ce-843a39ac6569" class="">Valores individuais para as margens</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="524320e9-6f53-4042-b640-00f8d57a8900" class="code"><code class="language-CSS">p {
+  margin: 25px 50px 75px 100px;
+}</code></pre><p id="e5b5c14d-59a7-42fc-9aaa-0089808a7f5d" class=""><mark class="highlight-purple">*margem: 25px 50px 75px 100px;<br/>a margem superior é de 25px<br/>a margem direita é 50px<br/>a margem inferior é de 75px<br/>margem esquerda é 100px<br/></mark></p><p id="713acdf4-7eaf-4a7b-b84d-446f385ba6ff" class="">Se houver menos que quatro valores, os já determinados vão seguir essa ordem.</p></div></div><p id="a7709e2f-243d-4ec3-9c48-33e51dc37f79" class="">Recolher margem -As margens superior e inferior dos elementos às vezes são recolhidas em uma única margem que é igual à maior das duas margens, quando as duas margens colapsam em uma única margem.</p><p id="51096a34-c089-4680-b27f-5d3f2b9e5af9" class="">Exemp.</p><div id="eea64497-fcd0-4bbd-8c43-91c1e82b60bf" class="column-list"><div id="4662ef4c-04af-4d7d-bae7-64349b1eac3f" style="width:50%" class="column"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="3908250b-357c-4b8a-a2b0-53b07677c935" class="code"><code class="language-CSS">h1 {
+  margin: 0 0 50px 0;
+}
+
+h2 {
+  margin: 20px 0 0 0;
+}</code></pre><p id="96504c16-719f-4583-a821-e0354b34e602" class="">
+</p></div><div id="b884c1b6-0e59-42af-8bd2-bbbf56d79e22" style="width:50%" class="column"><p id="440d4036-0d46-4b8c-a148-08b42a2fd985" class="">No exemplo o elemento &lt;h1&gt; tem uma margem inferior de 50px e o elemento &lt;h2&gt; tem uma margem superior definida como 20px.</p><p id="9b2abbad-d0b2-468a-b8bb-00c3f2538937" class="">O senso comum parece sugerir que a margem vertical entre o &lt;h1&gt; e o &lt;h2&gt; seria um total de 70px (50px + 20px). Mas devido ao colapso da margem, a margem real acaba sendo 50px.</p></div></div><p id="037fdcf9-6840-4056-a112-2a14a6508f21" class=""><strong>Padding - distância interna entre um elemento e a sua borda.</strong></p><p id="644c74c0-bc89-4906-9b28-c8a2a60e5eff" class="">*os princípios de dimensionamento de padding segue os mesmos princípios de dimensionamento da margin, incluindo propriedades e ordem de medidas individuais</p><p id="1c5833fe-8411-4fbb-8b9a-3101e9fa7a35" class="">
+</p><p id="1e06a583-1cd4-4adc-abf5-cead3adb4e9d" class=""><strong>Box sinzing - é essencialmente uma caixa que envolve cada elemento HTML</strong></p><p id="9f2b95d7-89ce-439a-aa65-eec7e7a4a9cd" class="">Consiste no conjunto de contnent, margin, padding e border.</p><p id="b427ac6e-0dd4-43f0-81fb-7390d16d4bf6" class="">Exemp. Demonstração do modelo de caixa:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="f64f81d1-be2f-415a-adbc-a1e992e51f5c" class="code"><code class="language-CSS">div {
+  width: 300px;
+  border: 15px solid green;
+  padding: 50px;
+  margin: 20px;
+}</code></pre><p id="6ae8bd9d-9888-4c17-95a8-4a26af54b84c" class="">
+</p><div id="b2dba018-b8e7-4598-941f-1d0e7709e4d7" class="column-list"><div id="efbd910c-81e1-49fa-9c4d-c56f9c9e6cca" style="width:37.5%" class="column"><p id="8be03164-0740-4e4a-83a4-7259439eca46" class="">Há a propriedade box sizing que constitui 2 valores:</p><p id="73db751c-9c7d-47da-afbc-29e33d2d9a13" class="">box sizing: contnent box *é a operação comum somando os valores</p><p id="6870bdb0-3dd9-49b2-aafb-c0d5c665e73a" class="">box sizing: border box *redmensiona para que o total seja a largura e altura pré-definida</p><p id="17db5e34-4ab2-4cf6-8b7f-615651fbca40" class="">Exemp. 200 x 200 px.&gt;&gt;&gt;</p></div><div id="7f05c4cf-972f-4495-b239-41d35bf2b3c7" style="width:62.5%" class="column"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="f71b3417-8017-43e5-9969-bb3667bbadd0" class="code"><code class="language-CSS">div {
+width: 200px; I
+height: 200px;
+color: white;
+margin: 20px;
+padding: 20px
+}
+}
+#elemento-02 {
+background: purple;
+box-sizing: border-box;</code></pre><p id="dcf69df6-721d-408a-a182-a031939d6f53" class="">
+</p></div></div></div></details><hr id="602c2e98-8532-439e-ab2b-309a72966361"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Cores, Sombra e Opacidade CSS</mark></summary><div class="indented"><p id="b732fa13-0b50-4fc8-9a53-b9455a06e56d" class="">
+</p><ul id="c4b97ecb-75b8-4c05-869d-73b6778445a1" class="bulleted-list"><li style="list-style-type:disc">Formas de definição:</li></ul><ul id="39b16bef-246a-4ad2-ae92-0fb2ae31dcc8" class="bulleted-list"><li style="list-style-type:disc">Cores pré-definidas - <a href="https://www.w3schools.com/tags/ref_colornames.asp">https://www.w3schools.com/tags/ref_colornames.asp</a></li></ul><ul id="8d8eb81d-004b-4e8d-b1e7-c36567c66862" class="bulleted-list"><li style="list-style-type:disc">Palavra chave “current color” - cor previamente definida</li></ul><ul id="93345430-f8fc-4d3c-b7e8-f4e45ff8ee05" class="bulleted-list"><li style="list-style-type:disc">Hexadecimal (HEX) -Tons de vermelho, verde e azul (00 a FF) na numeração hexadecimal</li></ul><ul id="6a53adbe-0b2d-4e65-902f-d0b6c4e35831" class="bulleted-list"><li style="list-style-type:disc">RGB e RGBA - Tons de vermelho, verde e azul (de 0 a 255 ) e/ou transparência (0.0 a 1.0)</li></ul><ul id="23c7eb81-e4e8-4a03-8d2e-6abec11b1071" class="bulleted-list"><li style="list-style-type:disc">HSL e HSLA - Matiz (0 a 359) , saturação e luminosidade (0 a 100%) e/ou </li></ul><p id="7cd28b88-8962-4c29-88dc-eb05f77654b5" class="">Transparência (0.0 a 1.0)</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="099705e2-699f-426e-a875-7de6a7e77de2" class="code"><code class="language-CSS">&lt;h1 style=&quot;background-color:rgb(255, 99, 71);&quot;&gt;...&lt;/h1&gt;
+&lt;h1 style=&quot;background-color:#ff6347;&quot;&gt;...&lt;/h1&gt;
+&lt;h1 style=&quot;background-color:hsl(9, 100%, 64%);&quot;&gt;...&lt;/h1&gt;
+
+&lt;h1 style=&quot;background-color:rgba(255, 99, 71, 0.5);&quot;&gt;...&lt;/h1&gt;
+&lt;h1 style=&quot;background-color:hsla(9, 100%, 64%, 0.5);&quot;&gt;...&lt;/h1&gt;</code></pre><p id="56fd2079-af2f-4db5-81cf-f3349452f20b" class="">
+</p><p id="4b88967f-3440-406f-b6cc-3465811284b8" class=""><strong>Para sombras:</strong></p><p id="6bef7b91-78f1-4ac9-a765-55c649d8cb29" class="">Prop. Box shadow - <a href="https://box-shadow.dev/">https://box-shadow.dev/</a></p><p id="6b142565-2c08-4154-8860-c547a1f36574" class="">Ordem de elemenstos - Horizontal offset &gt; Vertical offset &gt; Blur &gt; Spread Radius &gt; Color</p><p id="32e0c1af-5a6f-4456-90fb-5855f6ff22b0" class="">Sintaxe:<mark class="highlight-purple"><code> box-shadow: none|h-offset v-offset blur spread color |inset|initial|inherit;</code></mark></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d402590d-c93f-4984-a1ae-90b5f7a3cc08" class="code"><code class="language-CSS">#example1 {
+  box-shadow: 5px 10px;
+}</code></pre><p id="c0357b9e-c412-4fc6-b834-25fb98a0447f" class="">filter: drop shadow - recomendado para imagens png</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="0a779c7d-9696-40e9-99b1-497015b2e0e1" class="code"><code class="language-CSS">img {
+  width: 150px;
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+}</code></pre><p id="810799ff-3dcd-41c3-a812-ead99d456bec" class="">Opacity </p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ca06d9b9-a469-4165-92da-4fe8de23f8bb" class="code"><code class="language-CSS">exemplo {
+background-color:white;
+border: 5px solid purple;
+color: orange;
+padding: 20px;
+opacity: 0.5;
+}</code></pre></div></details><hr id="f7cdd227-eeaa-4122-bf34-97940da72b0c"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Elementos, Background e Overflow</mark></summary><div class="indented"><h3 id="26694365-7e3d-42ca-971d-6bc5b339979b" class="">Background</h3><p id="d6f8c0ac-c8ab-4885-a8d9-53eca5268ca4" class="">Propriedades de background do CSS/ exemplso</p><hr id="635772c6-5f17-464c-9a53-17b63308383f"/><div id="bd9122b1-d647-4005-b485-f118eff4b80e" class="column-list"><div id="d1f932e0-a05e-4069-b96c-378a3d3b6494" style="width:50%" class="column"><p id="8e33ee5d-0e29-415e-99e4-bb157a14ffde" class=""><mark class="highlight-purple"><code>background-color</code></mark><mark class="highlight-purple"> </mark></p><p id="9d0c001f-ed27-4b5a-815f-4b7f72546296" class=""><mark class="highlight-default">background-color: lightblue;</mark></p><hr id="a5181a9c-4315-4e08-86d5-86d860115c0c"/><p id="3940a783-6afa-48db-a3fd-564bb38e693f" class=""><mark class="highlight-purple"><code>background-image</code></mark><mark class="highlight-purple"> </mark></p><p id="e1ff2539-afa6-420d-a1db-7968bf2d4d20" class=""><mark class="highlight-default">background-image: url(&quot;paper.gif&quot;);</mark></p><hr id="754f4c3f-04ac-48a0-8d18-12e98055ffeb"/><p id="6f89eaa4-099d-4f9f-b6e6-8b92febfa80c" class=""><mark class="highlight-purple"><code>background-repeat</code></mark><mark class="highlight-purple"> </mark></p><p id="ff364517-dfa9-4e5f-a0fe-f8f9a8febfac" class="">background-image: url(&quot;gradient_bg.png&quot;);<br/>background-repeat: repeat-x;<br/></p><hr id="63d20bc1-7451-41c0-bf57-eaf954cb6b4b"/><p id="8bd963ce-1d35-42dd-8680-f9e4d9c7415e" class=""><mark class="highlight-purple"><code>background-position</code></mark></p><p id="b765c5a3-2301-4f72-806c-dc9360b109dc" class="block-color-purple">background-position: <em>value</em>; </p><p id="37d5a5dc-0f48-44a4-8666-49c02d1453bb" class="block-color-purple">value (px, position, percentage, intial ou inherit)</p><p id="57a50b94-fe6c-4990-bfcd-d1b38cd19a0f" class="">background-image: url(&quot;img_tree.png&quot;);<br/>background-repeat: no-repeat;<br/>background-position: right top;<br/></p><p id="dac1d724-92f0-4508-9687-2c0a09c4e297" class="">
+</p><p id="a0b5d532-47d1-4514-aea9-07d3ccd56d64" class=""><mark class="highlight-purple">Position y or x</mark></p><p id="60ff26dd-8a41-4870-9fb6-a52cc0b14a25" class="">div {</p><p id="4936e91c-a486-4d9c-acbe-41e24f6f487c" class="">background-image: url(&#x27;w3css.gif&#x27;);</p><p id="6e9c8c7b-80a7-44f2-9233-4888abbd12d3" class="">background-repeat: no-repeat;</p><p id="534e5b6e-01b0-463c-bcc7-e36723f16089" class="">background-position-y: center;</p><p id="feb8dd5d-1664-4a91-9841-842757bc26d3" class="">}</p><hr id="b7678615-3a81-449c-932f-8ad0efa7f962"/><p id="adee2251-7df9-4cc2-8f5b-52b9e88bd503" class=""><code><mark class="highlight-purple">background-origin</mark></code></p><p id="1d2bfae5-4d9a-407d-8b0a-93f9d71612b8" class="">Esta propriedade não tem efeito se <a href="https://www.w3schools.com/csSref/pr_background-attachment.php">o anexo em segundo plano</a> for &quot;fixo&quot;.</p><p id="cb7e0e6f-a869-4fdd-b090-bc09b98006fe" class=""><mark class="highlight-purple">A imagem de fundo &quot;paper.gif&quot; começa no canto superior esquerdo da borda de preenchimento e a imagem de fundo &quot;img_tree.gif&quot; começa no canto superior esquerdo do conteúdo:</mark></p><p id="8bd05f25-df4d-4338-93a0-14b6cb22148c" class="">#example1 {</p><p id="86e8fb9b-0309-4eb6-ac05-2cfca6be21b3" class="">border: 10px dashed black;</p><p id="461bc50b-f0f2-451d-b110-f1816b8450fb" class="">padding: 25px;</p><p id="e6e87723-6964-4664-b494-80c983295d40" class="">background: url(img_tree.gif), url(paper.gif);</p><p id="65e3ac40-413b-4cc6-90a3-2648caa93ab5" class="">background-repeat: no-repeat;</p><p id="50e6dc92-11f5-4ae8-aadc-5165ebb70760" class="">background-origin: content-box, padding-box;</p><p id="a991d6d0-91c7-4132-a317-8631796e9f79" class="">}</p><hr id="1e3dca96-46a9-42a2-9cf4-2452dccdd311"/><p id="ea7c93a9-0764-4497-ad1b-af8bccc0125f" class=""><mark class="highlight-purple"><code>background clip</code></mark><mark class="highlight-purple"> *padding-box, contnent-box or border-box</mark></p><p id="0ce2403c-534a-4d97-8497-38ec9230c86e" class="">div {</p><p id="ff4ebf6e-0d88-41e3-a8f5-a2d3d1ba5b17" class="">border: 10px dotted black;</p><p id="60f11351-614c-497d-8803-e4a3359707a0" class="">padding: 15px;</p><p id="b441b2b0-776c-4485-bcda-41013ffd6309" class="">background: lightblue;</p><p id="4f8c180d-4ab6-4c60-bebf-5b8d22e9ede0" class="">background-clip: padding-box;</p><p id="6e57613a-d770-43e0-809f-b61dc676e2c0" class="">}</p><hr id="9c53a470-ac06-435a-8cbe-d1dfbb5f4aad"/></div><div id="566a4c62-36e6-4ccc-949a-0b6b219f0a90" style="width:50%" class="column"><p id="e8ba56cd-1901-4944-816a-2eff1fb831af" class=""><mark class="highlight-purple"><code>background-attachment</code></mark><mark class="highlight-purple"> *fixed, scroll, local, intial or inherit</mark></p><p id="d0f59136-82ae-4e5b-9d81-a40eba09b17a" class="">background-image: url(&quot;img_tree.png&quot;);</p><p id="8f38b5e7-51e0-4df9-a470-ba90889bb0db" class="">background-repeat: no-repeat;</p><p id="d669feff-3c9e-467b-87a0-c4930efbf298" class="">background-position: right top;</p><p id="1724b1b6-323e-4ffd-9b4a-9b17f16a5177" class="">background-attachment: fixed;</p><hr id="4bf01a07-0263-46a1-9d41-ecca7300e8a2"/><p id="0f07f734-c85e-4f8d-a93e-269d8c1afb6b" class=""><mark class="highlight-purple"><code>background</code></mark><mark class="highlight-purple">(propriedade abreviada)</mark></p><p id="6fbc6d48-8460-47a1-9cae-143b748ece78" class="">background: #ffffff url(&quot;img_tree.png&quot;) no-repeat right top;</p><p id="9a875fe1-0077-43ad-9c47-505a01300eeb" class="">ordem:</p><p id="eff30ab9-6395-448f-adf0-f9d27628b259" class="block-color-purple"><mark class="highlight-purple">background-color</mark></p><p id="a14102bf-c845-43fe-a6bd-9ddb4d53c9fa" class="block-color-purple"><mark class="highlight-purple">background-image</mark></p><p id="30ba6134-b394-4818-91b7-301797e4fa1d" class="block-color-purple"><mark class="highlight-purple">background-repeat</mark></p><p id="beeeab69-d770-4678-b40c-ff6bc4fa3ef6" class="block-color-purple"><mark class="highlight-purple">background-attachment</mark></p><p id="31ba4084-e947-41e8-8005-567770e924ef" class="block-color-purple"><mark class="highlight-purple">background-position</mark></p><hr id="7ab09b8e-af8d-4b71-9c3b-239a4c6a173a"/><p id="5aac2892-91fc-441f-9fce-6e3914dae447" class=""><mark class="highlight-purple"><code>background-blend-mode</code></mark><mark class="highlight-purple"> *normal, multiply, screen, overlay, darken, lighten, color-dodge, saturation, color, hue, exclusion, difference, soft-light, hard-light color-burn e/ou luminosity</mark></p><p id="efc1e6ce-aef4-4719-9ad7-9506ce3fafe9" class="">.container {<br/>display: block;<br/>background-size: 100%;<br/></p><p id="4b9c6cc9-d8d6-42ab-9a81-a2aa5864b55a" class="">linear-gradient(purple 0%, red 90%),<br/>linear-gradient(to right, purple 0%, yellow 90%),<br/>url(&#x27;<br/><a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/14179/image.jpg">https://s3-us-west-2.amazonaws.com/s.cdpn.io/14179/image.jpg</a>&#x27;) 30px,<br/>url(&#x27;<br/><a href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/14179/image.jpg">https://s3-us-west-2.amazonaws.com/s.cdpn.io/14179/image.jpg</a>&#x27;) 20px;<br/>background-blend-mode: screen, difference, lighten;<br/>background-size: 100%;<br/>background-size: cover;<br/>background-repeat: no-repeat;<br/></p><hr id="72bccd77-678b-4265-9c0b-ee2d5ddcbda3"/><p id="7f0227e6-c0e7-46c8-b343-01794e5b2aba" class=""><mark class="highlight-purple"><code>background-size</code></mark><mark class="highlight-purple"> *auto, percentage, cover, contain ou length</mark></p><p id="8b4c83c3-f084-4770-b330-9364e2acc0e2" class="">#example1 {</p><p id="0d26089c-3db6-4cb2-a6a9-6e73dc9b472e" class="">background: url(mountain.jpg);</p><p id="2d93fb33-dfd5-4045-a4fc-10cf206b5b92" class="">background-repeat: no-repeat;</p><p id="01ae17cf-9aec-44d0-83ba-1a94d4471ad2" class="">background-size: auto;</p><p id="a37f6223-c1ab-4370-ae71-fa5442d1eb61" class="">}</p><p id="d2f96431-98c5-4b7b-8098-c1488aaf12a0" class="">#example2 {</p><p id="ebf84121-df7a-4c21-9597-406f1cec7150" class="">background: url(mountain.jpg);</p><p id="b5cc0bb5-cdf3-4cf3-aa02-3f497524df8c" class="">background-repeat: no-repeat;</p><p id="eb2b8635-b896-4821-bd2c-3cb8bdfa7944" class="">background-size: 300px 100px;</p><p id="5bd12809-255a-44e7-8ded-5b3ae798c974" class="">}</p><hr id="b3f95e44-988c-4ed8-833b-d1a35cf2b63c"/><p id="25a445cd-eff1-4f7b-8590-1e1851f2f3f1" class="">
+</p></div></div><h3 id="7f390a3a-cc21-4238-8b37-935a458b59f8" class="">Overflow</h3><p id="6fb796c4-ea59-4874-b939-a0984f5ca67b" class="">A <mark class="highlight-purple"><code>overflow</code></mark>propriedade especifica se o conteúdo deve ser recortado ou adicionadas barras de rolagem quando o conteúdo de um elemento for muito grande para caber na área especificada.</p><p id="a4975685-988c-46c7-a8a6-0897d7873f50" class="">Possui os seguintes valores:</p><ul id="ba368b40-0d61-4e0c-888a-d196a4081e6b" class="bulleted-list"><li style="list-style-type:disc"><code><mark class="highlight-purple">visible</mark></code><mark class="highlight-default"> - </mark>Padrão. Oconteúdo não é cortado, sendo renderizado fora da caixa do elemento</li></ul><ul id="cdab64ca-3557-4fbb-b415-82e776ecdd29" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-purple"><code>hidden</code></mark><mark class="highlight-purple"> - </mark>O conteúdo será cortado e o restante do conteúdo ficará invisível</li></ul><ul id="1af7db9e-5250-478e-bcf1-da478e5c825a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-purple"><code>scroll</code></mark><mark class="highlight-purple"> - </mark><mark class="highlight-default">É c</mark>ortado e uma barra de rolagem é adicionada para ver o resto do conteúdo</li></ul><ul id="d85c03eb-1d0f-4200-ac92-45c13c228579" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-purple"><code>autoscroll</code></mark><mark class="highlight-purple">- </mark>Semelhante a scrool mas adiciona barras de rolagem somente quando necessário</li></ul><p id="9f31e2c0-18e9-4ecc-8ca2-13d403049ad5" class="">*O overflow só funciona para elementos de bloco com altura especificada.</p><p id="fe28c34e-2153-440d-9480-1d40b6d92abe" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="080e555b-eb94-440d-bd35-1cf6fb97dda7" class="code"><code class="language-CSS">div {
+  overflow: auto;
+}</code></pre><p id="f16c7b8b-3434-4611-a42d-4c1337457463" class="">As propriedades <mark class="highlight-purple"><code>overflow-x</code></mark> e <mark class="highlight-purple"><code>overflow-y</code></mark> especificam se o excesso de conteúdo deve ser alterado apenas horizontalmente ou verticalmente (ou ambos). Há ainda o <mark class="highlight-purple"><code>overflow-wrap</code></mark>, que Especifica se o navegador pode ou não quebrar linhas com palavras longas, caso elas ultrapassem seu contêiner.</p></div></details><hr id="d6d31c95-19dc-4f3a-815e-6552a5ff9846"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Imagem </mark></summary><div class="indented"><p id="8db803d6-2917-4116-95b0-4ce7cc03d0e0" class=""><mark class="highlight-purple"><strong>fill</strong></mark> - distorce para caber no tamanho definido</p><p id="0b344a83-29b3-401b-9b2d-fb6585090cd2" class=""><mark class="highlight-purple"><strong>contain</strong></mark> - adapta a imagem porém mantendo a proporção original</p><p id="2cf57dad-c210-41ad-82ae-7059eb641a85" class=""><mark class="highlight-purple"><strong>cover</strong></mark> -  redmesiona ao tamanho máximo do conteiner, ultrapassando o espaço do elemento</p><p id="555edb89-47cd-4992-adfe-f7f0765fba2f" class=""><mark class="highlight-purple"><strong>none</strong></mark> - manter tamanho original ignorando as dimensões do elemento pai</p><p id="0b757ec4-f7f5-402e-bd03-2dd5631cf65b" class=""><mark class="highlight-purple"><strong>scale-down</strong></mark> - escolhe a menor entre as opções anteriores</p><p id="5c75f8d5-3ab6-4cc7-83e7-9fdf925da620" class="">
+</p><p id="77352c36-0761-4998-8779-95b0357792e3" class="">Object-fit </p><p id="8dc31c1d-b788-463f-af8e-d9078c71e116" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="6772aa36-40e2-4dac-8891-65b069e86f0a" class="code"><code class="language-HTML">&lt;style&gt;
+img {
+width: 200px;
+height: 300px;
+border: 5px solid blue;
+}
+&lt;/style&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Propriedade &lt;code&gt;object-fit&lt;/code&gt;&lt;/h1&gt;
+&lt;code&gt;object-fit: fill;&lt;/code&gt; (padrão)
+&lt;img src=&quot;linkdaimagem&quot;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="50c81ed1-a40a-450a-bc06-2c0a6c13dfb4" class="">
+</p><p id="1a5e2a22-46ae-4aa3-be84-c43b07d760ed" class="">Object positon</p><p id="c236c42e-a4a4-4f81-897a-40cdd05c0fcc" class="">Exemp. Imagem com 5px da esquerda e 10% do topo dentro da caixa de conteúdo:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="c36e7dc8-c0f1-4271-9b20-045307cfe5d7" class="code"><code class="language-CSS">img.a {
+  width: 200px;
+  height: 400px;
+  object-fit: none;
+  object-position: 5px 10%;
+  border: 5px solid red;
+}</code></pre><p id="44793da2-2790-40b8-9203-55b605a09d0d" class="">
+</p></div></details><hr id="590c8f9a-a6e8-4033-9769-8988814a8a9a"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Borda </mark></summary><div class="indented"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="e60bd43f-5429-4a5a-8c38-7ad11ac8ee0a"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/circle-dashed_gray.svg"/></div><div style="width:100%"><strong>Propriedades</strong><ul id="62ad43af-5268-4e1f-a5bf-7b42add94890" class="bulleted-list"><li style="list-style-type:disc">border-style</li></ul><ul id="8488543f-272d-4b84-b656-dcc1f5a8a792" class="bulleted-list"><li style="list-style-type:disc">border-width</li></ul><ul id="5f541329-5ae7-46f9-9723-623afb693331" class="bulleted-list"><li style="list-style-type:disc">border color</li></ul></div></figure><h3 id="92a76209-a222-494f-aaff-6da74fcb348c" class="">Estilo</h3><p id="c07f29a9-4e10-44c7-a806-7389f31037c8" class="">A <mark class="highlight-purple"><code>border-style</code></mark>propriedade especifica que tipo de borda exibir.</p><div id="f8b10b65-e324-41ef-bc40-af5cdfeed3c7" class="column-list"><div id="4cbab1bc-d5f1-455f-bf62-fa0acf6bed0b" style="width:50%" class="column"><p id="1df119f5-8d12-4c61-9c76-f6d3e9f0db60" class="">Os seguintes valores são permitidos:</p><p id="675bd51f-d6a9-4d79-84b1-57538bd979ad" class=""><mark class="highlight-purple"><code>dotted</code></mark> - Define uma borda pontilhada</p><p id="e904ab06-f3dd-4613-b4d0-71ac49ced593" class=""><mark class="highlight-purple"><code>dashed</code></mark> - Define uma borda tracejada</p><p id="94a932d6-0721-4de4-92a4-9e139f3d0f6b" class=""><mark class="highlight-purple"><code>solid</code></mark><mark class="highlight-purple"> </mark>- Define uma borda sólida</p><p id="0991a5f7-5e70-410c-b8f6-dd7b8822d859" class=""><mark class="highlight-purple"><code>double</code></mark><mark class="highlight-purple"> </mark>- Define uma borda dupla</p><p id="93ec6cd1-985c-4595-93c1-151849aaf873" class=""><mark class="highlight-purple"><code>groove</code></mark> - Define uma borda ranhurada 3D.</p><p id="076fb303-0fe1-43c2-a0a8-db5333e310d6" class="">O efeito depende do valor da cor da borda</p><p id="b913db29-66dc-48cc-a204-8a1fe2c3f9ad" class=""><mark class="highlight-purple"><code>ridge</code></mark><mark class="highlight-purple"> </mark>- Define uma borda 3D estriada.</p><p id="c15df03b-e6d2-4815-853c-ff1b676085ac" class="">O efeito depende do valor da cor da borda</p><p id="03e53668-ff0d-445c-b746-30447f012978" class=""><mark class="highlight-purple"><code>inset</code></mark> - Define uma borda de inserção 3D.</p><p id="6823f24e-61cb-415b-8254-bfabe9adf639" class="">O efeito depende do valor da cor da borda</p><p id="05613073-4b68-44e1-8fdb-f205eaf335d9" class=""><mark class="highlight-purple"><code>outset</code></mark> - Define uma borda inicial 3D.</p><p id="f6a02db4-4e8c-4446-a205-2b88f8d08428" class="">O efeito depende do valor da cor da borda</p><p id="afe314e2-bc88-4d3a-a47e-f6761a3a2dfc" class=""><mark class="highlight-purple"><code>none</code></mark><mark class="highlight-purple"> </mark>- Não define borda</p><p id="f8b53685-9c5b-4adc-b69a-1571aa81554f" class=""><mark class="highlight-purple"><code>hidden</code></mark> - Define uma borda oculta</p><p id="9a1eb516-8915-4e4a-aee4-113772fc259a" class="">
+</p><h3 id="d2d56785-173d-4d5c-8dcf-ee75b6911aed" class="">Tamanho</h3><p id="d02f0818-7be6-49d0-9651-c74f527afc0f" class="">A propriedade <mark class="highlight-purple"><code>border-width</code></mark> especifica a largura das quatro bordas.</p><p id="98092e94-1211-4f56-9fd4-10ad25849f58" class="">A largura pode ser definida como um </p><ol type="1" id="9408969e-9a9c-42ea-a479-9569817e6fd0" class="block-color-purple numbered-list" start="1"><li>thin: borda fina 1px</li></ol><ol type="1" id="9bc062b5-6e90-4b2f-a52c-d4a6d1e59ca1" class="block-color-purple numbered-list" start="2"><li>medium: borda média 3px</li></ol><ol type="1" id="18a02600-9f2d-4d48-ad19-798fd84b1368" class="block-color-purple numbered-list" start="3"><li>thick: borda grossa 5px</li></ol><ol type="1" id="e66927dc-f5fe-45e3-8744-d5ce62b55399" class="numbered-list" start="4"><li>length: unidade de medida CSS (px, pt, em, cm, ...)</li></ol><p id="82a05829-45ac-4bed-897a-fcabe44b3196" class="">
+</p><p id="6e873449-9b9c-480d-ba91-700cb0badaf7" class="">Valores para borda</p><ol type="1" id="bd279390-6e39-4c7d-a01a-03e01fb04422" class="block-color-purple numbered-list" start="1"><li>Superior - top</li></ol><ol type="1" id="b6c5770b-5f52-4c46-a840-884cdbc73026" class="block-color-purple numbered-list" start="2"><li>Direita - rigth</li></ol><ol type="1" id="591a2eda-728a-467e-9bb5-a69e0ad63dbc" class="block-color-purple numbered-list" start="3"><li>Inferior - bottom</li></ol><ol type="1" id="1647313d-6924-4b2d-b543-0e166df2075d" class="block-color-purple numbered-list" start="4"><li>Esquerda - left</li></ol><p id="fb11c2d9-e851-4e3d-bd40-1bf493c51725" class="">*Os valores permitem que adicione valores diferentes para cada lado</p></div><div id="d0f18cc0-0f25-496d-b6c3-75193b8bf214" style="width:50%" class="column"><p id="d4226271-06ec-4f8a-be60-332218bdd34b" class="">Examp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="fe69470f-e326-4b37-9707-7fb66beb1abb" class="code"><code class="language-CSS">p.dotted {border-style: dotted;}
+p.dashed {border-style: dashed;}
+p.solid {border-style: solid;}
+p.double {border-style: double;}
+p.groove {border-style: groove;}
+p.ridge {border-style: ridge;}
+p.inset {border-style: inset;}
+p.outset {border-style: outset;}
+p.none {border-style: none;}
+p.hidden {border-style: hidden;}
+p.mix {border-style: dotted dashed solid double;}</code></pre><p id="f21878e4-9c24-4ffe-8a9a-539a6dd99008" class="">
+</p><p id="5cb44c5e-d6b0-4139-bfa2-24ea1a2f6db1" class="">A <mark class="highlight-purple"><code>border-style</code></mark>propriedade pode ter de um a quatro valores (para a borda superior, borda direita, borda inferior e borda esquerda).</p><p id="57e98f57-eb61-476b-a1a8-6b163974a00d" class="">
+</p><h3 id="a3158675-a54e-4ee3-8c79-b058d28112ff" class="">Cor </h3><p id="2a672234-3368-457d-9899-03f24e5dc1da" class="">A <mark class="highlight-purple"><code>border-color</code></mark> propriedade é usada para definir a cor das quatro bordas,  se não definido será a cor do elemento.</p><p id="e96deaba-84a2-4077-8ae9-95330478d61e" class="">cor pode ser definida por: <mark class="highlight-purple">name, HEX, RGB, HCL ou transparent</mark></p><p id="027cfd4a-acd3-4788-9195-c75e2e915167" class="">
+</p><p id="52f21ac4-8e43-4bb2-817c-a84a32d4775b" class="">Pode ser definida também para cada lado individualmente.</p><p id="9e83ae1c-9875-4fcf-9663-4b1a3f7eeda1" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="6cbce113-be64-4015-92d8-4427441593b4" class="code"><code class="language-CSS">p.one {
+  border-style: solid;
+  border-color: red green blue yellow;
+}</code></pre><p id="f06beea5-4046-4a5e-b225-c72a5c1ccc22" class=""> </p><p id="1901546b-1358-4c85-a4db-013500951795" class="">/* red top, green right, blue bottom and yellow left */</p></div></div><h3 id="7b068ffd-9270-4db9-b566-08991591cdb6" class="">Border</h3><p id="560c51fd-2e7e-40c6-acf0-63eb68126769" class="">A <mark class="highlight-purple"><code>border</code></mark>propriedade é uma propriedade abreviada para as seguintes propriedades de borda individuais:</p><div id="75908b10-2b54-45d7-933a-3ee144bcdf7f" class="column-list"><div id="b8a1f300-47ea-4105-ae78-435b8786b25b" style="width:50%" class="column"><ul id="6c86eddd-b053-4f2c-bded-ec1e31a82138" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-purple"><code>border-width</code></mark></li></ul><ul id="b8195865-11f9-4235-995f-07e6bb6a1c81" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-purple"><code>border-color</code></mark></li></ul><ul id="9c770ec2-5cd2-44d1-86ca-e539b4e1cd9a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-purple"><code>border-style</code></mark></li></ul><p id="4b07b3eb-4a25-4476-b4d4-f6f61b545a84" class="">Pode-se também definir propriedades especificando um lado da borada. ex. </p><p id="81791959-6c0b-40d7-8cc2-0593b361a501" class=""><mark class="highlight-purple"><strong>border-left</strong></mark></p><p id="ba26eca7-bc6b-4364-a435-bd21575159e3" class="">
+</p></div><div id="11a370b5-a932-4ce1-8cf0-5a1b4e5366a5" style="width:50%" class="column"><p id="2af63b24-f48d-4781-84e2-b0f0546d7c10" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="f83f60e2-3129-45f6-b079-afc262f1a064" class="code"><code class="language-CSS">p {
+  border: 5px red solid ;
+}</code></pre></div></div><p id="b5665475-9297-4bac-be60-d9c194ef1117" class="">Pode-se também arredondar os cantos com border-radius. ex. <mark class="highlight-purple"><strong>border-radius: 10px;</strong></mark></p><p id="04cfa5ab-79c9-4582-8f6b-ab765b23bf64" class="">Ou propor um arredondamento oval. ex. <mark class="highlight-purple"><strong>border-radius: 30px/10px;</strong></mark></p><p id="9bb16e7a-3123-4903-82fc-9d9e1b02185a" class="">Utilizando a porcentagem pode-se até formar um quadrado perfeito. ex.  <mark class="highlight-purple"><strong>border-radius: 50%;</strong></mark></p><h3 id="1ad3e929-68c4-4cba-8f78-b9871e52c490" class="">Border Image</h3><p id="52339ddf-d6e2-49aa-9dfe-4910babb2e85" class=""><br/><br/><mark class="highlight-purple"><code>border-image-source</code></mark> - Especifica o caminho para a imagem a ser usada como borda<br/><br/><mark class="highlight-purple"><code>border-image-slice</code></mark> - Especifica como fatiar a imagem da borda<br/><br/><mark class="highlight-purple"><code>border-image-width</code></mark> - Especifica as larguras da imagem da borda<br/><br/><mark class="highlight-purple"><code>border-image-outset</code></mark> - Especifica o quanto a área da imagem da borda se estende além da caixa da borda<br/><br/><mark class="highlight-purple"><code>border-image-repeat </code></mark>- Especifica se a imagem da borda deve ser repetida, arredondada ou esticada</p></div></details><hr id="4a242903-6713-4125-a341-78cb9c7642dd"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Texto </mark></summary><div class="indented"><p id="111fe369-65de-4560-b671-9a60b903f880" class="">
+</p><p id="ca5fa122-b6b2-4219-9479-ed896d0c8b62" class=""><strong>Text-Transform - usada para especificar letras maiúsculas e minúsculas em um texto.</strong></p><p id="371af8f8-d4d6-4067-973e-177fdfd055a7" class=""><mark class="highlight-purple"><code>text-transform</code></mark><mark class="highlight-purple"> (capitalize, uppercase, lowercase, none, full-width, full-size-kana)</mark></p><p id="bc1b8f26-d92b-49a5-8858-4dd5aa662f36" class="">
+</p><p id="c0306ad1-ac71-4c0b-a0b7-e8eef34166be" class=""><strong>Text-Align - é usada para definir o alinhamento horizontal de um texto.</strong></p><div id="7a2da49f-f21c-49f3-a204-10fa2a1a45d7" class="column-list"><div id="a8cc8da9-99d9-4f86-b34f-c6e474eaa6cd" style="width:50%" class="column"><p id="8e0e203e-8087-49e4-ba5e-f8e966bbe258" class="">Um texto pode ser alinhado como right, left, center, or justified</p><p id="ec9db03e-8ffb-4737-b4b6-b64ed2a7f41a" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="a79b9205-261c-4540-9344-b0e392bef2b6" class="code"><code class="language-CSS">h1 {
+  text-align: center;
+}</code></pre></div><div id="d864d6fa-fdce-4bc0-931c-b5ec43117aec" style="width:50%" class="column"><p id="3c40ca80-7cbd-41a4-bbb4-afe69cb1f240" class=""><mark class="highlight-purple"><code>text-align-last</code></mark> propriedade especifica como alinhar a última linha de um texto.</p><p id="4c306d5a-2755-4d71-92af-31587b9f1955" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="b82bbcf8-8e8f-4ca8-a6ca-07a36b3f8f82" class="code"><code class="language-CSS">p.a {
+  text-align-last: right;
+}</code></pre></div></div><p id="77a47c7a-67c0-4f78-b54c-25c656e5a31a" class="">As propriedades <mark class="highlight-purple"><code>direction</code></mark><mark class="highlight-purple">*rtl ou ltr </mark>e <mark class="highlight-purple"><code>unicode-bidi</code></mark>podem ser usadas para alterar a direção do texto de um elemento</p><p id="56ff111a-6ca2-4d14-92fc-be496881cb00" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="08ac6107-af4f-49ae-9921-ee3419449dfc" class="code"><code class="language-CSS">p {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}</code></pre><p id="8fa51e82-2b17-4595-aa0a-88385b8a090d" class="">
+</p><p id="0d1f210f-f309-4156-b51c-e636a6942ccc" class="">A <mark class="highlight-purple"><code>vertical-align</code></mark>propriedade define o alinhamento vertical de um elemento.</p><p id="851216b9-7eff-4538-b087-ce941b316423" class="">Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="a755423b-6ba2-43e7-bace-522fae0c0a9c" class="code"><code class="language-CSS">img.a {
+  vertical-align: baseline;
+}</code></pre><p id="ef885a6a-977e-4fa4-b96f-e3bcf85b2852" class="">vertical-align: baseline|<em>length</em>|sub|super|top|text-top|middle|bottom|text-bottom|initial|inherit;</p><p id="4bf5f6c7-903b-41f2-9755-1b605233a115" class="">
+</p><p id="8020c4b4-c752-4669-8c86-d868529677e5" class=""><strong>Text-Decoration </strong></p><p id="46eecd56-7438-4173-8680-2949340e8950" class="">Propriedades:</p><p id="f1ba40ee-aad9-476a-b623-3e73731b1bc2" class=""><mark class="highlight-purple"><code>text-decoration-line</code></mark><mark class="highlight-purple"> (underline, overline, line-through, underline overline, underline line-through)</mark></p><p id="b9386f93-d34b-4c2d-901b-e55b0e7b56be" class=""><mark class="highlight-purple"><code>text-decoration-color</code></mark><mark class="highlight-purple"> (RGB, HSL, HEX)</mark></p><p id="a5d8a9c6-b6ad-4006-82d8-64e323ed3adb" class=""><mark class="highlight-purple"><code>text-decoration-style</code></mark><mark class="highlight-purple"> (solid, doule, dotted, dashed, wavy)</mark></p><p id="9ec922b5-c4e3-4cae-a352-381431bc0983" class=""><mark class="highlight-purple"><code>text-decoration-thickness</code></mark><mark class="highlight-purple"> (auto, from-front, pixels, percentage)</mark></p><p id="d0801649-cc3b-47c6-8799-ee1e0f496f1d" class=""><mark class="highlight-purple"><code>text-decoration</code></mark><mark class="highlight-purple"> </mark></p><p id="8906d0d2-a0ff-4fb5-ab30-ec888c45bdf0" class="">
+</p><p id="c50d9ca4-9f7c-4b68-b10b-cd09dd9f6896" class="">Abreviatura Exemp.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="dc99e926-1d81-4bc4-ae81-e3a974336a17" class="code"><code class="language-CSS">p {
+  text-decoration: underline red double 5px;
+}</code></pre><p id="b5a0d498-eec1-4090-9d3f-76a988fa6892" class=""><strong>Text-Indent - define o comprimento do espaço vazio (recuo) colocado antes das linhas de texto em um bloco.</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="fdc068a4-1ef9-4649-90ac-359e4cab3ac7" class="code"><code class="language-CSS">/* &lt;length&gt; values */
+text-indent: 3mm;
+text-indent: 40px;
+
+/* &lt;percentage&gt; value
+   relative to the containing block width */
+text-indent: 15%;
+
+/* Keyword values */
+text-indent: 5em each-line;
+text-indent: 5em hanging;
+text-indent: 5em hanging each-line;</code></pre><p id="b7c5869a-5788-4812-8e95-5de290fb5b9a" class="">
+</p><div id="1141414a-0c6c-4e9d-a35d-fa7f21d7d806" class="column-list"><div id="76cd2d2e-0858-49f5-b346-9fb98f5272ab" style="width:50%" class="column"><p id="24899bb7-4ffb-482f-941c-8f5f9d9959b6" class=""><strong>letter-spacing </strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="7515f7e9-6f03-48d9-a6ef-c17c9e3c3b1a" class="code"><code class="language-CSS">/* Keyword value */
+letter-spacing: normal;
+
+/* &lt;length&gt; values */
+letter-spacing: 0.3em;
+letter-spacing: 3px;
+letter-spacing: 0.3px;</code></pre></div><div id="b922490c-5707-42f4-a546-f5093e86704f" style="width:50%" class="column"><p id="a2e5b095-7fa5-4f49-9f6e-10be7f851dbd" class=""><strong>word-spacing</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="9eaf4314-132b-4b76-affa-c3a9d1547214" class="code"><code class="language-CSS">/* Keyword value */
+word-spacing: normal;
+
+/* &lt;length&gt; values */
+word-spacing: 3px;
+word-spacing: 0.3em;</code></pre></div></div><div id="6dcd3572-dca2-4a58-b903-480200a1670e" class="column-list"><div id="7156cda2-6bf3-4c3c-8722-02c7a8a3061e" style="width:50%" class="column"><p id="5542bd17-d68e-4456-b977-0fcac8e3ef23" class=""><strong>line-height </strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="0babcd3a-8ebf-41ed-99a3-11ff1f260b8f" class="code"><code class="language-CSS">/* Keyword value */
+line-height: normal;
+
+/* Unitless values: use this number 
+multiplied by the 
+element&#x27;s font size */
+line-height: 3.5;
+
+/* &lt;length&gt; values */
+line-height: 3em;
+
+/* &lt;percentage&gt; values */
+line-height: 34%;</code></pre></div><div id="53e5607b-c35e-481e-9e71-8118424ec723" style="width:50%" class="column"><p id="00fce7cf-1c3e-4437-8a70-4bda126eebba" class=""><strong>white-space</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="14937e62-7244-4c33-bea9-b11086d0d1d3" class="code"><code class="language-CSS">/* Single keyword values */
+white-space: normal;
+white-space: nowrap;
+white-space: pre;
+white-space: pre-wrap;
+white-space: pre-line;
+white-space: break-spaces;
+
+
+/* white-space-collapse and 
+text-wrap shorthand values */
+white-space: collapse balance;
+white-space: preserve nowrap;</code></pre></div></div><p id="38b26ba8-9bee-40e7-9e1e-f66ec5aae0d2" class="">
+</p><div id="6f801c2f-c6fa-4f5e-9170-56a847ee33c1" class="column-list"><div id="65950133-7545-4156-8817-3d82d2d3cdba" style="width:50%" class="column"><p id="5c8219d2-5a14-4dc7-b695-ff06d514b352" class=""><strong>word break</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="3f549b78-6241-4bc0-a5c9-3c0c646adadb" class="code"><code class="language-CSS">/* Keyword values */
+word-break: normal;
+word-break: break-all;
+word-break: keep-all;
+word-break: auto-phrase; 
+/* experimental */
+word-break: break-word; 
+/* deprecated */</code></pre></div><div id="2d67aa36-6bb1-4309-969e-eed2e420bd41" style="width:50%" class="column"><p id="0121341d-dbf8-4aab-a0d0-3514c997784e" class=""><strong>Word wrap</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="64ca243b-5514-4261-b6bb-85f96f68ecaf" class="code"><code class="language-CSS">/* Keyword values */
+word-wrap: normal;
+word-wrap: break-word;</code></pre><p id="0c82db98-dd9b-4187-820d-85b26c085a1e" class="">*A <mark class="highlight-purple"><code>overflow-wrap</code></mark>propriedade atua da mesma forma que a propriedade não padrão <mark class="highlight-purple"><code>word-wrap</code></mark>. A <mark class="highlight-purple"><code>word-wrap</code></mark>propriedade agora é tratada pelos navegadores como um alias da propriedade padrão.</p></div></div><div id="e2afc312-7d80-4129-9147-1c2b601645d8" class="column-list"><div id="d655c319-0f46-4642-90f9-1f5e1a98a4cd" style="width:50%" class="column"><p id="d63210ba-ca21-4cb3-ba72-30b42b4be824" class=""><strong>Writing mode</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="3e023fed-39b1-4eb3-9193-f2af1025efd1" class="code"><code class="language-CSS">/* Keyword values */
+writing-mode: horizontal-tb;
+writing-mode: vertical-rl;
+writing-mode: vertical-lr;
+writing-mode: sideways-lr;
+writing-mode: sideways-rl;</code></pre></div><div id="76d63c12-63e4-466f-8188-b53dcb88f461" style="width:50%" class="column"><p id="24a027a0-be7b-4085-b108-58e73717f916" class=""><strong>Text Overflow</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="4c94943b-27f9-4c52-8a6d-f383aaeee50c" class="code"><code class="language-CSS">text-overflow: clip;
+text-overflow: ellipsis ellipsis;
+text-overflow: clip clip
+text-overflow: clip ellipsis
+text-overflow: ellipsis ellipsis
+text-overflow: ellipsis &quot; [..]&quot;</code></pre><p id="679cb816-d1e6-4219-baf6-8fa921d7b8c4" class="">
+</p></div></div></div></details><hr id="91b708cb-1fee-4082-8f88-527e07a96160"/><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><mark class="highlight-default">Fontes </mark></summary><div class="indented"><h3 id="97bacd63-1cc0-4a2d-9b6f-00fff83a1038" class="">Regras CSS</h3><p id="c9f6a965-5afa-43ca-8d5c-457d3d308832" class="">A <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule">regra </a><a href="https://developer.mozilla.org/en-US/docs/Web/CSS">CSS</a> é usada para importar regras de estilo de outras folhas de estilo válidas. Uma regra <em>deve</em> ser definida no topo da folha de estilo, antes de qualquer outra regra (exceto <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@charset">@charset</a> e <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@layer">@layer</a> ) e declarações de estilo, ou será ignorada.</p><p id="5d263bb5-7b9e-4ab8-89dd-295b5a379cdf" class="">
+</p><p id="8f87959e-b77f-4bbf-8dea-02e6786fa7f8" class=""><strong>@font-face - A diretiva @font-face permite importar uma fonte a partir de um arquivo externo e utilizá-la como uma fonte nativa nas páginas HTML.</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="f8e9cf83-a047-4841-afea-fe45fd65ac0e" class="code"><code class="language-CSS">@font-face {
+  font-family: Barrio;
+  src: url(../fonts/Barrio-Regular.ttf)
+}
+
+h1 {
+  font-family: Barrio;
+}</code></pre><p id="d5c1c752-74e7-4848-a7af-4daffbd6ac24" class="">Exemp. fonte local</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="cecc025e-8642-401d-995a-cea435175a4b" class="code"><code class="language-CSS">@font-face {
+  font-family: [nome];
+  src: local([nome da fonte local]), url([caminho]);
+}</code></pre><p id="4b63c785-294d-488e-b10c-c58e97a26b13" class="">Exemp. importada <strong>(@import-url)</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="3c8a2716-36cb-4689-a274-e558bb044c4f" class="code"><code class="language-CSS">@import url(&#x27;https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap&#x27;);
+* {
+font-family: Roboto;
+}</code></pre><p id="058a829b-51b4-4a24-9241-a2bfb19ebb3f" class="">Exemp. Pode-se também especificar fontes alternativas. Neste exemplo, a cópia local do usuário de &quot;Helvetica Neue Bold&quot; é usada; se o usuário não tiver essa fonte instalada (tanto o nome completo da fonte quanto o nome Postscript são tentados), então a fonte para download chamada &quot;MgOpenModernaBold.ttf&quot; será usada:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="7f3b90a5-5920-4c66-b6d4-61cb5ca1c142" class="code"><code class="language-CSS">@font-face {
+  font-family: &quot;MyHelvetica&quot;;
+  src: local(&quot;Helvetica Neue Bold&quot;), local(&quot;HelveticaNeue-Bold&quot;),
+    url(&quot;MgOpenModernaBold.ttf&quot;);
+  font-weight: bold;
+}</code></pre><p id="b517afce-f5c0-4a73-8d88-4b9dfc76ae84" class="">
+</p><table id="ae0c6788-21d0-44cc-9baf-9a1b24900b2c" class="simple-table"><tbody><tr id="b2ec9e1d-f299-425b-9662-daaf1b2a80df"><td id="yMl@" class="" style="width:220.66666666666666px">Propriedades</td><td id="]ucS" class="" style="width:220.66666666666666px">Valor</td><td id="c:wF" class="" style="width:220.66666666666666px">Descrição</td></tr><tr id="2bccf506-5943-46df-8cb2-74d6686e16b0"><td id="yMl@" class="" style="width:220.66666666666666px">font-family</td><td id="]ucS" class="" style="width:220.66666666666666px"><em>name</em></td><td id="c:wF" class="" style="width:220.66666666666666px">Obrigatório. O nome da fonte</td></tr><tr id="cc6916e3-c9aa-43f6-b719-750ee8a4fad2"><td id="yMl@" class="" style="width:220.66666666666666px">src</td><td id="]ucS" class="" style="width:220.66666666666666px"><em>URL</em></td><td id="c:wF" class="" style="width:220.66666666666666px">Obrigatório, Define a url em que se encontra a fonte</td></tr><tr id="3b40022f-ed4e-4c86-a304-87d80aa5174a"><td id="yMl@" class="" style="width:220.66666666666666px">font-stretch</td><td id="]ucS" class="" style="width:220.66666666666666px">normal, condensed, ultra-condensed, extra-condensed, semi-condensed, expanded, semi-expanded, extra-expanded, ultra-expanded</td><td id="c:wF" class="" style="width:220.66666666666666px">Opcional. Define como a fonte deve ser esticada. O valor padrão é &quot;normal”</td></tr><tr id="1f0a0438-a278-49f0-8108-acf58b8bd078"><td id="yMl@" class="" style="width:220.66666666666666px">font-style</td><td id="]ucS" class="" style="width:220.66666666666666px">normal, italic, oblique</td><td id="c:wF" class="" style="width:220.66666666666666px">Opcional. Define como a fonte deve ser estilizada. O valor padrão é &quot;normal”</td></tr><tr id="68f4daac-5242-44d3-8be0-f9b4b6f7b2a9"><td id="yMl@" class="" style="width:220.66666666666666px">font-display</td><td id="]ucS" class="" style="width:220.66666666666666px">auto, block, swap, fallback, optional</td><td id="c:wF" class="" style="width:220.66666666666666px">Opcional. Determina como uma fonte é exibida com base em se e quando ela foi baixada e está pronta para uso.</td></tr><tr id="072b6257-dc57-41e3-8d9e-ef26526bc54e"><td id="yMl@" class="" style="width:220.66666666666666px">font-weight</td><td id="]ucS" class="" style="width:220.66666666666666px">normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900, lighter, bolder</td><td id="c:wF" class="" style="width:220.66666666666666px">Opcional. Define o negrito da fonte. O valor padrão é &quot;normal”</td></tr><tr id="2ab42ec4-475e-4dea-8b76-add8f896de9b"><td id="yMl@" class="" style="width:220.66666666666666px">unicode-range</td><td id="]ucS" class="" style="width:220.66666666666666px"><em>unicode-range</em></td><td id="c:wF" class="" style="width:220.66666666666666px">Opcional. Define o intervalo de caracteres Unicode suportados pela fonte. O valor padrão é &quot;U+0-10FFFF”</td></tr></tbody></table><p id="444b5ddc-5d96-40d1-a32f-f9a959161449" class="">
+</p><p id="174d12a6-f573-4570-9d8a-2350561def6d" class=""><strong>Font-variant - permite definir todas as variantes de fonte de uma fonte. (normal ou small-caps)</strong></p><p id="aee9e3ed-a0fa-463b-9aad-16b699f7ee3c" class="">Exemp. </p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="81e60b8d-ec03-4a8e-91ce-bd02cb7c5be4" class="code"><code class="language-CSS">p.small {
+  font-variant: small-caps;
+}</code></pre><p id="df93598a-9f83-4623-87f8-9a204c349f4a" class="">
+</p></div></details><hr id="e210fd42-22d2-4903-af76-14c872c1ef8b"/></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
